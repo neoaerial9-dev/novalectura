@@ -46,7 +46,7 @@ El proyecto se encuentra en la etapa de construcción y validación del backend.
 
 El frontend con Angular forma parte de la arquitectura prevista para la aplicación y se integrará con el backend mediante la API correspondiente.
 
-## 🗺️ Hoja de ruta
+## Hoja de ruta
 
 - [x] Definir el enfoque fullstack del proyecto.
 - [x] Seleccionar Spring Boot y Angular como tecnologías principales.
