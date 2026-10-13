@@ -1,0 +1,19 @@
+# ====================================================================================================
+# Plantilla de configuracion local.
+# ====================================================================================================
+# 1. Copia este archivo como: application-local.properties (en la misma carpeta: src/main/resources/)
+# 2. Reemplaza los valores de ejemplo por los tuyos.
+# 3. NO subas application-local.properties a Git (agregalo a .gitignore).
+# 4. Activa el perfil "local" al ejecutar la aplicacion.
+# ====================================================================================================
+
+# --- MySQL ---
+spring.datasource.username=root
+spring.datasource.password=TU_CONTRASENA_DE_MYSQL
+
+# --- JWT ---
+app.jwt.secret=PEGA_AQUI_TU_CLAVE_BASE64
+
+# --- Primer administrador (se crea al arrancar si no existe) ---
+app.admin.correo=admin@novalectura.com
+app.admin.contrasena=CAMBIA_ESTA_CONTRASENA
