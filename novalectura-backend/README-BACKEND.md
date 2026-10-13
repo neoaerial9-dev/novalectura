@@ -23,7 +23,7 @@ API REST para una plataforma web de compra y venta de **libros usados**, indepen
 3. Un usuario de MySQL con permiso para crear bases de datos (por ejemplo `root`).
 4. IntelliJ IDEA con el plugin de **Lombok** y el procesamiento de anotaciones activado (*Settings → Build, Execution, Deployment → Compiler → Annotation Processors → Enable annotation processing*).
 
-La base de datos `used_books` **se crea sola** al primer arranque y las tablas también (`ddl-auto=update`); no hace falta ejecutar ningún script.
+La base de datos `novalectura` **se crea sola** al primer arranque y las tablas también (`ddl-auto=update`); no hace falta ejecutar ningún script.
 
 ---
 
@@ -31,44 +31,24 @@ La base de datos `used_books` **se crea sola** al primer arranque y las tablas t
 
 ### Archivos de configuración
 
-| Archivo | Contenido |
-|---|---|
-| `src/main/resources/application.properties` | Configuración común, **sin secretos** |
-| `src/main/resources/application-local.properties` | Tus valores reales: clave de MySQL, clave JWT, administrador |
-| `src/main/resources/application-local.properties.txt` | Plantilla para crear el anterior |
-
 **1. `application.properties`** debe quedar así:
 
 ```properties
-spring.application.name=used-books-backend
+spring.application.name=novalectura_backend
 
-spring.datasource.url=jdbc:mysql://localhost:3306/used_books?createDatabaseIfNotExist=true
-spring.datasource.username=${DB_USERNAME:root}
-spring.datasource.password=${DB_PASSWORD:}
+spring.datasource.url=jdbc:mysql://localhost:3306/novalectura?createDatabaseIfNotExist=true
+spring.datasource.username=TU_USERNAME_MYSQL
+spring.datasource.password=TU_CONTRASEÑA_MYSQL
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.open-in-view=false
 spring.jpa.properties.hibernate.default_batch_fetch_size=50
 
-app.jwt.secret=${JWT_SECRET:}
+app.jwt.secret=JWT_SECRET
 app.jwt.expiration-minutes=60
 app.cors.allowed-origins=http://localhost:4200
-app.admin.correo=${ADMIN_CORREO:}
-app.admin.contrasena=${ADMIN_CONTRASENA:}
+app.admin.correo=admin@novalectura.com
+app.admin.contrasena=admin1234
 ```
-
-**2. Crea `application-local.properties`** copiando la plantilla `application-local.properties.example` y completando tus valores (ver más abajo cómo generar la clave JWT).
-
-### Variables de configuración
-
-| Propiedad | Variable de entorno equivalente | Obligatoria | Descripción |
-|---|---|---|---|
-| `spring.datasource.username` / `password` | `DB_USERNAME` / `DB_PASSWORD` | Sí | Credenciales de MySQL |
-| `app.jwt.secret` | `JWT_SECRET` | **Sí** | Clave para firmar tokens: Base64 de **al menos 32 bytes** |
-| `app.jwt.expiration-minutes` | — | No (60) | Vigencia del token en minutos |
-| `app.admin.correo` / `contrasena` | `ADMIN_CORREO` / `ADMIN_CONTRASENA` | Recomendada | Crea el primer administrador al arrancar |
-| `app.cors.allowed-origins` | — | No | Orígenes permitidos para el frontend, separados por coma |
-
-Cada propiedad se puede dar en `application-local.properties` **o** como variable de entorno; si no está en ninguno de los dos, se usa el valor por defecto de `application.properties`.
 
 ### Generar la clave JWT
 
@@ -95,37 +75,9 @@ openssl rand -base64 32
 
 ---
 
-## Cómo ejecutar el backend
-
-### Opción A: desde IntelliJ IDEA
-
-1. Abre la carpeta del proyecto y espera a que Maven importe las dependencias.
-2. *Run → Edit Configurations →* selecciona `UsedBooksBackendApplication`.
-3. En **Active profiles** escribe `local` y guarda.
-4. Pulsa *Run*.
-
-### Opción B: desde la terminal
-
-```bash
-# Linux / macOS
-./mvnw spring-boot:run -Dspring-boot.run.profiles=local
-```
-
-```powershell
-# Windows (PowerShell): las comillas son necesarias
-.\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=local"
-```
-
-### Opción C: generar un JAR y ejecutarlo
-
-```bash
-./mvnw clean package
-java -jar target/*.jar --spring.profiles.active=local
-```
-
 ### Comprobar que funciona
 
-1. En el log debe aparecer `Started UsedBooksBackendApplication` y, la primera vez, `Usuario administrador creado: <tu correo>`.
+1. En el log debe aparecer `Started NovalecturaBackendApplication` y, la primera vez, `Usuario administrador creado: <tu correo>`.
 2. Abre <http://localhost:8080/api/books>: debe responder una página vacía en JSON (`"contenido": []`).
 
 ---
@@ -145,7 +97,7 @@ Cubren entidades, seguridad, servicios, mappers, validaciones y controladores. N
 ## Estructura del proyecto
 
 ```
-src/main/java/com/novalectura/used_books_backend/
+src/main/java/com/novalectura/novalectura_backend/
 ├── config/        SecurityConfig (reglas de acceso, CORS, BCrypt), AdminInitializer
 ├── controller/    Controladores REST (reciben la petición y delegan)
 ├── service/       Lógica de negocio y reglas (propiedad, stock, transacciones)
@@ -314,16 +266,16 @@ Los errores usan el formato estándar `ProblemDetail` (`status`, `detail`). Los 
 
 | Síntoma | Causa y solución |
 |---|---|
-| `Falta la clave JWT. Define la variable de entorno JWT_SECRET` | No hay `app.jwt.secret`. Verifica que `application-local.properties` exista y que el perfil `local` esté activo (o define `JWT_SECRET`) |
+| `Falta la clave JWT. Define la variable de entorno JWT_SECRET` | No hay `app.jwt.secret`. Define `JWT_SECRET`) |
 | `JWT_SECRET debe tener al menos 32 bytes` | La clave es muy corta o no es Base64. Genera una nueva con los comandos de arriba |
 | `Communications link failure` / `Connection refused` | MySQL no está en ejecución o no escucha en el puerto 3306 |
-| `Access denied for user 'root'` | Usuario o contraseña de MySQL incorrectos en `application-local.properties` |
+| `Access denied for user 'root'` | Usuario o contraseña de MySQL incorrectos en `application.properties` |
 | `Port 8080 was already in use` | Otro programa usa el puerto; agrega `server.port=8081` al archivo local |
 | 401 en una ruta protegida | Falta la cabecera `Authorization: Bearer ...` o el token expiró (60 min) |
 | 403 en una ruta protegida | Tu rol no alcanza (por ejemplo, una ruta solo para ADMIN) |
 | IntelliJ marca en rojo clases `*MapperImpl` | Las genera MapStruct al compilar. Recarga Maven, activa *Annotation processing* y ejecuta *Build → Rebuild Project* |
 | Errores de Lombok (`cannot find symbol` en getters) | Instala el plugin de Lombok y activa el procesamiento de anotaciones |
-| Quieres reiniciar los datos | Elimina la base de datos `used_books` (`DROP DATABASE used_books;`) y vuelve a arrancar |
+| Quieres reiniciar los datos | Elimina la base de datos `novalectura` (`DROP DATABASE novalectura;`) y vuelve a arrancar |
 
 ---
 
