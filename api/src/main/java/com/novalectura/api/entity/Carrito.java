@@ -1,9 +1,7 @@
 package com.novalectura.api.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,7 +10,9 @@ import java.util.List;
 @Table(name = "carritos")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@Builder
 public class Carrito {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

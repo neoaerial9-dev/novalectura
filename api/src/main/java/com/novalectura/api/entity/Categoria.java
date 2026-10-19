@@ -1,15 +1,15 @@
 package com.novalectura.api.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "categorias")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@Builder
 public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
