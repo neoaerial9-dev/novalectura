@@ -1,0 +1,122 @@
+<app-top-menu></app-top-menu>
+
+<main class="account-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Mi cuenta</p>
+      <h1>Perfil</h1>
+    </div>
+    <a routerLink="/catalogo">Volver al catálogo</a>
+  </header>
+
+  <p *ngIf="profileError" class="feedback error page-feedback" role="alert">{{ profileError }}</p>
+  <p *ngIf="loadingProfile" class="loading-message" role="status">Cargando tus datos...</p>
+
+  <section *ngIf="!loadingProfile && user" class="profile-card">
+    <header class="profile-banner">
+      <div class="avatar" aria-hidden="true">{{ initials }}</div>
+      <div class="identity">
+        <h2>{{ user.nombres }} {{ user.apellidos }}</h2>
+        <p>{{ user.correo }}</p>
+        <span class="role-badge">{{ user.rol === 'ADMIN' ? 'Administrador' : 'Usuario' }}</span>
+      </div>
+    </header>
+
+    <form class="profile-form" #profileForm="ngForm" (ngSubmit)="saveProfile(profileForm)">
+      <div class="form-grid">
+        <label>
+          <span>Nombres</span>
+          <input
+            type="text"
+            name="nombres"
+            [(ngModel)]="profile.nombres"
+            required
+            maxlength="100"
+            autocomplete="given-name">
+        </label>
+
+        <label>
+          <span>Apellidos</span>
+          <input
+            type="text"
+            name="apellidos"
+            [(ngModel)]="profile.apellidos"
+            required
+            maxlength="100"
+            autocomplete="family-name">
+        </label>
+
+        <label>
+          <span>Correo electrónico</span>
+          <input type="email" [value]="user.correo" readonly aria-describedby="email-hint">
+          <small id="email-hint">El correo no se puede cambiar desde el perfil.</small>
+        </label>
+
+        <label>
+          <span>Teléfono</span>
+          <input
+            type="tel"
+            name="telefono"
+            [(ngModel)]="profile.telefono"
+            maxlength="20"
+            autocomplete="tel"
+            placeholder="+34 600 000 000">
+        </label>
+
+        <label class="full-width">
+          <span>Dirección de envío</span>
+          <input
+            type="text"
+            name="direccion"
+            [(ngModel)]="profile.direccion"
+            maxlength="255"
+            autocomplete="street-address"
+            placeholder="Calle, número, ciudad, país">
+        </label>
+      </div>
+
+      <p class="feedback success" *ngIf="profileSuccess" role="status">{{ profileSuccess }}</p>
+      <button class="primary-button" type="submit"
+        [disabled]="profileForm.invalid || savingProfile || !profileForm.dirty">
+        {{ savingProfile ? 'Guardando...' : 'Guardar cambios' }}
+      </button>
+    </form>
+  </section>
+
+  <section class="account-panel password-panel">
+    <h2>Cambiar contraseña</h2>
+    <form #passwordForm="ngForm" (ngSubmit)="changePassword()">
+      <label for="current-password">Contraseña actual</label>
+      <input id="current-password" name="currentPassword" type="password"
+        [(ngModel)]="password.contrasenaActual" required autocomplete="current-password">
+
+      <label for="new-password">Nueva contraseña</label>
+      <input id="new-password" name="newPassword" type="password"
+        [(ngModel)]="password.contrasenaNueva" required minlength="8" maxlength="72"
+        autocomplete="new-password">
+
+      <label for="confirm-password">Confirmar nueva contraseña</label>
+      <input id="confirm-password" name="confirmPassword" type="password"
+        [(ngModel)]="confirmPassword" required autocomplete="new-password">
+
+      <p class="feedback error" *ngIf="passwordError" role="alert">{{ passwordError }}</p>
+      <p class="feedback success" *ngIf="passwordSuccess" role="status">{{ passwordSuccess }}</p>
+      <button class="primary-button" type="submit" [disabled]="passwordForm.invalid || savingPassword">
+        {{ savingPassword ? 'Guardando...' : 'Actualizar contraseña' }}
+      </button>
+    </form>
+  </section>
+
+  <section class="logout-panel">
+    <div>
+      <h2>Cerrar sesión</h2>
+      <p>Finaliza tu sesión en este dispositivo.</p>
+      <p class="feedback error" *ngIf="logoutError" role="alert">
+        {{ logoutError }} <a routerLink="/login">Ir a ingresar</a>
+      </p>
+    </div>
+    <button class="secondary-button" type="button" (click)="logout()" [disabled]="loggingOut">
+      {{ loggingOut ? 'Cerrando...' : 'Cerrar sesión' }}
+    </button>
+  </section>
+</main>

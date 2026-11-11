@@ -1,0 +1,156 @@
+:host {
+  display: block;
+  background: #1e2d49;
+}
+
+.navbar {
+  display: flex;
+  min-height: 54px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 22px;
+  border-bottom: 1px solid rgb(255 255 255 / 8%);
+  color: #fff;
+}
+
+.brand,
+.navigations a,
+.login-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 15px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.brand-icon {
+  color: #d3a77c;
+  font-size: 19px;
+}
+
+.navigations {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-left: auto;
+  padding-right: 20px;
+}
+
+.navigations a {
+  color: #dce1ea;
+  font-size: 12px;
+}
+
+.navigations a:hover {
+  color: #fff;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cart-link {
+  position: relative;
+  display: grid;
+  width: 32px;
+  height: 34px;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+.cart-link svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.cart-count {
+  position: absolute;
+  top: -1px;
+  right: -3px;
+  display: grid;
+  min-width: 17px;
+  height: 17px;
+  place-items: center;
+  border-radius: 50%;
+  padding: 0 4px;
+  background: #d3a77c;
+  color: #30251d;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.cart-error {
+  max-width: 120px;
+  color: #f0c9a8;
+  font-size: 10px;
+}
+
+.login-link {
+  border-radius: 6px;
+  padding: 8px 13px;
+  background: #d3a77c;
+  color: #30251d;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.login-link:hover {
+  background: #e2b990;
+}
+
+.account-link {
+  display: grid;
+  width: 31px;
+  height: 31px;
+  place-items: center;
+  border-radius: 50%;
+  background: #d3a077;
+  color: #30251d;
+  font-size: 10px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.account-link:hover {
+  background: #e2b990;
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    gap: 12px;
+    padding: 0 14px;
+  }
+
+  .brand {
+    font-size: 13px;
+  }
+
+  .navigations {
+    gap: 13px;
+    padding-right: 0;
+  }
+
+  .header-actions {
+    gap: 7px;
+  }
+}

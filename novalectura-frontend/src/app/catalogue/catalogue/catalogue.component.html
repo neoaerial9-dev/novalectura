@@ -1,0 +1,83 @@
+<app-top-menu></app-top-menu>
+
+<section class="hero" id="inicio">
+  <div class="hero-content">
+    <p class="eyebrow">BIENVENIDO A NUESTRA COLECCIÓN</p>
+    <h1>Descubre tu próxima<br><em>gran lectura</em></h1>
+    <p class="hero-description">
+      Libros seleccionados para acompañarte en cada historia.
+    </p>
+  </div>
+</section>
+
+<main class="catalogue">
+  <form class="catalogue-tools" (ngSubmit)="loadBooks()">
+    <label class="search-box">
+      <span aria-hidden="true">⌕</span>
+      <input
+        type="search"
+        name="search"
+        [(ngModel)]="search"
+        placeholder="Buscar por título o autor..."
+        aria-label="Buscar por título o autor">
+    </label>
+
+    <label class="category-select">
+      <span class="visually-hidden">Filtrar por categoría</span>
+      <select name="category" [(ngModel)]="selectedCategory" (ngModelChange)="loadBooks()">
+        <option [ngValue]="null">Todas las categorías</option>
+        <option *ngFor="let category of categories" [ngValue]="category.idCategoria">
+          {{ category.nombre }}
+        </option>
+      </select>
+    </label>
+
+    <label class="sort-select">
+      <span class="visually-hidden">Ordenar libros</span>
+      <select name="order" [(ngModel)]="order" (ngModelChange)="loadBooks()">
+        <option value="">Más recientes</option>
+        <option value="precio_asc">Precio: menor a mayor</option>
+        <option value="precio_desc">Precio: mayor a menor</option>
+      </select>
+    </label>
+  </form>
+
+  <p class="results-count" aria-live="polite">
+    {{ totalBooks }} {{ totalBooks === 1 ? 'libro encontrado' : 'libros encontrados' }}
+  </p>
+
+  <p *ngIf="cartMessage" class="notice" role="status">{{ cartMessage }}</p>
+  <p *ngIf="errorMessage" class="notice notice-error" role="alert">{{ errorMessage }}</p>
+  <p *ngIf="categoriesErrorMessage" class="notice notice-error" role="alert">
+    {{ categoriesErrorMessage }}
+  </p>
+
+  <div *ngIf="loading" class="state-message" role="status">Cargando libros...</div>
+  <div *ngIf="!loading && !errorMessage && books.length === 0" class="state-message">
+    No encontramos libros con esos criterios.
+  </div>
+
+  <section *ngIf="!loading && books.length > 0" class="book-grid" aria-label="Libros del catálogo">
+    <app-item-book
+      *ngFor="let book of books"
+      [book]="book"
+      (openDetails)="openBookDetails($event)">
+    </app-item-book>
+  </section>
+
+  <nav *ngIf="totalPages > 1" class="pagination" aria-label="Paginación del catálogo">
+    <button type="button" (click)="previousPage()" [disabled]="page === 0">Anterior</button>
+    <span>Página {{ page + 1 }} de {{ totalPages }}</span>
+    <button type="button" (click)="nextPage()" [disabled]="page + 1 >= totalPages">Siguiente</button>
+  </nav>
+</main>
+
+<app-book-detail
+  *ngIf="selectedBook"
+  [book]="selectedBook"
+  [adding]="addingBookId === selectedBook.idLibro"
+  [isOwnBook]="isOwnBook(selectedBook)"
+  [message]="cartMessage"
+  (close)="closeBookDetails()"
+  (addToCart)="addToCart($event)">
+</app-book-detail>

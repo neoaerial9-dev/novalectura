@@ -1,0 +1,271 @@
+:host {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+}
+
+.backdrop {
+  display: grid;
+  min-height: 100%;
+  place-items: center;
+  overflow: auto;
+  padding: 24px;
+  background: rgb(13 17 24 / 58%);
+  backdrop-filter: blur(4px);
+}
+
+.detail-dialog {
+  display: grid;
+  width: min(100%, 700px);
+  min-height: 365px;
+  grid-template-columns: minmax(200px, .85fr) 1.4fr;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 22px 65px rgb(0 0 0 / 28%);
+}
+
+.detail-cover {
+  min-height: 365px;
+  background: #e8e1d6;
+}
+
+.detail-cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cover-placeholder {
+  display: flex;
+  min-height: 365px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  background: linear-gradient(145deg, #32435b, #9b7156);
+  color: #fff;
+  text-align: center;
+}
+
+.cover-placeholder span {
+  color: #e4c59f;
+  font-size: 30px;
+}
+
+.cover-placeholder strong {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 23px;
+}
+
+.cover-placeholder small {
+  opacity: .8;
+}
+
+.detail-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 27px 25px 20px;
+}
+
+.close-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: #f0eee9;
+  color: #3d3a36;
+  font-size: 23px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.category {
+  align-self: flex-start;
+  border-radius: 20px;
+  padding: 4px 8px;
+  background: #f3eee7;
+  color: #8a6748;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .45px;
+  text-transform: uppercase;
+}
+
+.detail-content h1 {
+  margin: 10px 30px 4px 0;
+  color: #292a2c;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 25px;
+  line-height: 1.14;
+}
+
+.author,
+.condition,
+.seller {
+  margin: 0;
+  color: #77736d;
+  font-size: 12px;
+}
+
+.condition {
+  margin-top: 5px;
+  text-transform: capitalize;
+}
+
+.description {
+  margin: 15px 0 10px;
+  color: #494641;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.stock {
+  margin: 0;
+  color: #77736d;
+  font-size: 11px;
+}
+
+.stock strong {
+  color: #36332e;
+}
+
+.seller {
+  margin-top: 7px;
+  font-size: 11px;
+}
+
+.purchase {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid #e8e4de;
+}
+
+.price {
+  color: #69482f;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 23px;
+}
+
+.purchase-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.quantity-control {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid #ddd8d0;
+  border-radius: 7px;
+}
+
+.quantity-control button,
+.quantity-control output {
+  display: grid;
+  width: 31px;
+  height: 34px;
+  place-items: center;
+  border: 0;
+  background: #fff;
+  color: #49433d;
+  font: inherit;
+  text-align: center;
+}
+
+.quantity-control button {
+  cursor: pointer;
+}
+
+.quantity-control button:disabled {
+  color: #b9b4ac;
+  cursor: default;
+}
+
+.add-button {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  border-radius: 7px;
+  padding: 0 12px;
+  background: #855a38;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.add-button:hover:not(:disabled) {
+  background: #68432a;
+}
+
+.add-button:disabled {
+  background: #a7a19a;
+  cursor: default;
+}
+
+.total {
+  margin: 9px 0 0;
+  color: #77736d;
+  font-size: 11px;
+  text-align: right;
+}
+
+.message {
+  margin: 9px 0 0;
+  color: #9f3028;
+  font-size: 12px;
+}
+
+@media (max-width: 560px) {
+  .backdrop {
+    padding: 14px;
+  }
+
+  .detail-dialog {
+    width: min(100%, 400px);
+    max-height: calc(100vh - 28px);
+    grid-template-columns: 1fr;
+    overflow: auto;
+  }
+
+  .detail-cover,
+  .cover-placeholder {
+    min-height: 195px;
+    height: 195px;
+  }
+
+  .detail-cover img {
+    object-fit: cover;
+  }
+
+  .detail-content {
+    min-height: 315px;
+    padding: 20px;
+  }
+
+  .detail-content h1 {
+    font-size: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .detail-dialog {
+    animation: appear .16s ease-out;
+  }
+
+  @keyframes appear {
+    from { opacity: 0; transform: translateY(8px) scale(.99); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+}

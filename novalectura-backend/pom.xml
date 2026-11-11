@@ -15,9 +15,10 @@
 	<description>Backend para NovaLectura</description>
 
 	<properties>
-		<java.version>17</java.version>
-		<lombok.version>1.18.32</lombok.version>
-	</properties>
+    <java.version>17</java.version>
+    <lombok.version>1.18.40</lombok.version>
+    </properties>
+
 
 	<dependencies>
 		<dependency>
@@ -50,7 +51,7 @@
 			<optional>true</optional>
 		</dependency>
 
-		<!-- Dependencias de prueba estándar y corregidas -->
+		<!-- Dependencias de prueba estándar -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -99,22 +100,15 @@
 			<artifactId>mapstruct</artifactId>
 			<version>1.5.5.Final</version>
 		</dependency>
-
-		<!-- Source: https://mvnrepository.com/artifact/org.jacoco/jacoco-maven-plugin -->
-		<dependency>
-			<groupId>org.jacoco</groupId>
-			<artifactId>jacoco-maven-plugin</artifactId>
-			<version>0.8.15</version>
-			<scope>compile</scope>
-		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+			<!-- Unica declaración corregida de JaCoCo -->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.14</version>
+				<version>0.8.15</version>
 				<executions>
 					<execution>
 						<goals>
@@ -147,11 +141,6 @@
 							<version>${lombok.version}</version>
 						</path>
 						<path>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-							<version>1.18.38</version>
-						</path>
-						<path>
 							<groupId>org.mapstruct</groupId>
 							<artifactId>mapstruct-processor</artifactId>
 							<version>1.5.5.Final</version>
@@ -165,26 +154,6 @@
 				<configuration>
 					<argLine>@{argLine} -Dnet.bytebuddy.experimental=true</argLine>
 				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.15</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>test</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

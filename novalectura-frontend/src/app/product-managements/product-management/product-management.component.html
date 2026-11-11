@@ -1,0 +1,161 @@
+<app-top-menu></app-top-menu>
+
+<main class="admin-page">
+  <section class="management">
+    <header class="page-header">
+      <p class="eyebrow">Panel de administración</p>
+      <h1>Gestión de productos</h1>
+    </header>
+
+    <p class="feedback success" *ngIf="successMessage" role="status">{{ successMessage }}</p>
+    <div class="toolbar">
+      <form class="search-form" (ngSubmit)="searchBooks()">
+        <label class="sr-only" for="book-search">Buscar libros por título o autor</label>
+        <button class="search-icon" type="submit" aria-label="Buscar libros">⌕</button>
+        <input id="book-search" name="search" type="search" [(ngModel)]="searchText"
+          placeholder="Buscar por título o autor...">
+      </form>
+      <button class="primary-button add-button" type="button" (click)="addBook()">
+        <span aria-hidden="true">+</span> Agregar libro
+      </button>
+    </div>
+
+    <p class="feedback error" *ngIf="errorMessage && !showBookEditor" role="alert">{{ errorMessage }}</p>
+
+    <section class="book-list" aria-label="Libros del catálogo">
+      <p class="empty-state" *ngIf="loadingBooks">Cargando libros...</p>
+      <p class="empty-state" *ngIf="!loadingBooks && books.length === 0">
+        {{ searchText.trim() ? 'No se encontraron libros.' : 'Todavía no hay libros en el catálogo.' }}
+      </p>
+
+      <div class="table-wrap" *ngIf="!loadingBooks && books.length > 0">
+        <table>
+          <thead>
+            <tr>
+              <th>Portada</th>
+              <th>Título</th>
+              <th>Autor</th>
+              <th>Categoría</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let book of books">
+              <td class="cover-cell">
+                <img *ngIf="book.imagen" [src]="book.imagen" [alt]="'Portada de ' + book.titulo">
+                <span *ngIf="!book.imagen" class="cover-placeholder" aria-hidden="true">▤</span>
+              </td>
+              <td class="title-cell">{{ book.titulo }}</td>
+              <td>{{ book.autor }}</td>
+              <td><span class="category-badge">{{ book.categoria.nombre }}</span></td>
+              <td class="price-cell">{{ book.precio | currency:'USD':'symbol':'1.2-2' }}</td>
+              <td class="stock-cell">{{ book.stock }}</td>
+              <td class="actions">
+                <button type="button" (click)="editBook(book)">Editar</button>
+                <button class="delete-action" type="button" (click)="deleteBook(book)">Eliminar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <nav class="pagination" *ngIf="totalPages > 1" aria-label="Paginación de libros">
+        <button type="button" (click)="loadBooks(currentPage - 1)"
+          [disabled]="loadingBooks || currentPage === 0">Anterior</button>
+        <span>Página {{ currentPage + 1 }} de {{ totalPages }}</span>
+        <button type="button" (click)="loadBooks(currentPage + 1)"
+          [disabled]="loadingBooks || currentPage + 1 >= totalPages">Siguiente</button>
+      </nav>
+    </section>
+  </section>
+</main>
+
+<div class="modal-backdrop" *ngIf="showBookEditor"
+  (click)="cancelEdit()" (keydown.escape)="cancelEdit()">
+  <section class="editor-modal" role="dialog" aria-modal="true"
+    [attr.aria-labelledby]="'book-editor-title'" (click)="$event.stopPropagation()">
+    <header class="modal-header">
+      <div>
+        <p class="eyebrow">Panel de administración</p>
+        <h2 id="book-editor-title">{{ editingBookId === null ? 'Agregar libro' : 'Editar libro' }}</h2>
+      </div>
+      <button class="close-button" type="button" aria-label="Cerrar formulario" (click)="cancelEdit()">×</button>
+    </header>
+
+    <p class="feedback error" *ngIf="errorMessage" role="alert">{{ errorMessage }}</p>
+
+    <form #bookFormRef="ngForm" (ngSubmit)="saveBook()">
+      <label for="titulo">Título</label>
+      <input id="titulo" name="titulo" [(ngModel)]="bookForm.titulo" required maxlength="200">
+
+      <label for="autor">Autor</label>
+      <input id="autor" name="autor" [(ngModel)]="bookForm.autor" required maxlength="150">
+
+      <div class="form-row">
+        <div>
+          <label for="precio">Precio</label>
+          <input id="precio" name="precio" type="number" [(ngModel)]="bookForm.precio"
+            required min="0.01" step="0.01">
+        </div>
+        <div>
+          <label for="stock">Stock</label>
+          <input id="stock" name="stock" type="number" [(ngModel)]="bookForm.stock"
+            required min="0" step="1">
+        </div>
+      </div>
+
+      <label for="categoria">Categoría</label>
+      <select id="categoria" name="categoria" [(ngModel)]="bookForm.idCategoria"
+        required [disabled]="categories.length === 0">
+        <option [ngValue]="0" disabled>Selecciona una categoría</option>
+        <option *ngFor="let category of categories" [ngValue]="category.idCategoria">
+          {{ category.nombre }}
+        </option>
+      </select>
+
+      <label for="condicion">Condición</label>
+      <select id="condicion" name="condicion" [(ngModel)]="bookForm.condicion" required>
+        <option *ngFor="let condition of conditions" [ngValue]="condition.value">
+          {{ condition.label }}
+        </option>
+      </select>
+
+      <label for="imagen">URL de imagen <span>(opcional)</span></label>
+      <input id="imagen" name="imagen" type="url" [(ngModel)]="bookForm.imagen" maxlength="500">
+
+      <label for="descripcion">Descripción <span>(opcional)</span></label>
+      <textarea id="descripcion" name="descripcion" [(ngModel)]="bookForm.descripcion"
+        rows="3" maxlength="2000"></textarea>
+
+      <p class="inline-hint" *ngIf="categories.length === 0">
+        Crea una categoría para poder registrar libros.
+      </p>
+      <div class="form-actions">
+        <button class="primary-button" type="submit"
+          [disabled]="bookFormRef.invalid || savingBook || categories.length === 0">
+          {{ savingBook ? 'Guardando...' : (editingBookId === null ? 'Agregar libro' : 'Guardar cambios') }}
+        </button>
+        <button class="secondary-button" type="button" (click)="cancelEdit()">Cancelar</button>
+      </div>
+    </form>
+
+    <details class="category-creator">
+      <summary>Agregar categoría</summary>
+      <form #categoryForm="ngForm" (ngSubmit)="createCategory()">
+        <label for="categoria-nombre">Nombre</label>
+        <input id="categoria-nombre" name="categoriaNombre" [(ngModel)]="categoryName"
+          required maxlength="100">
+        <label for="categoria-descripcion">Descripción <span>(opcional)</span></label>
+        <textarea id="categoria-descripcion" name="categoriaDescripcion"
+          [(ngModel)]="categoryDescription" rows="2" maxlength="255"></textarea>
+        <p class="feedback error" *ngIf="categoryError" role="alert">{{ categoryError }}</p>
+        <button class="secondary-button" type="submit"
+          [disabled]="categoryForm.invalid || savingCategory">
+          {{ savingCategory ? 'Guardando...' : 'Crear categoría' }}
+        </button>
+      </form>
+    </details>
+  </section>
+</div>

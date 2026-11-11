@@ -1,0 +1,79 @@
+<app-top-menu></app-top-menu>
+
+<main class="cart-page">
+  <header class="page-heading">
+    <p class="eyebrow">MI COMPRA</p>
+    <h1>Carrito</h1>
+  </header>
+
+  <p *ngIf="errorMessage" class="notice" role="alert">{{ errorMessage }}</p>
+  <p *ngIf="loading" class="state-message" role="status">Cargando tu carrito...</p>
+
+  <div *ngIf="!loading && cart" class="cart-layout">
+    <section class="cart-items" aria-label="Productos en tu carrito">
+      <article class="cart-item" *ngFor="let item of cart.detalles">
+        <div class="item-cover">
+          <img *ngIf="item.imagen" [src]="item.imagen" [alt]="'Portada de ' + item.titulo" loading="lazy">
+          <div *ngIf="!item.imagen" class="cover-placeholder" aria-hidden="true">▤</div>
+        </div>
+
+        <div class="item-info">
+          <h2>{{ item.titulo }}</h2>
+          <p>{{ item.precioUnitario | currency:'USD':'symbol':'1.2-2' }} por unidad</p>
+          <p class="stock">Disponibles: {{ item.stockDisponible }}</p>
+
+          <div class="item-purchase">
+            <div class="quantity-control" [attr.aria-label]="'Cantidad de ' + item.titulo">
+              <button
+                type="button"
+                [attr.aria-label]="'Disminuir cantidad de ' + item.titulo"
+                [disabled]="busyDetailId !== null || item.cantidad <= 1"
+                (click)="changeQuantity(item, item.cantidad - 1)">−</button>
+              <output aria-live="polite">{{ item.cantidad }}</output>
+              <button
+                type="button"
+                [attr.aria-label]="'Aumentar cantidad de ' + item.titulo"
+                [disabled]="busyDetailId !== null || item.cantidad >= item.stockDisponible"
+                (click)="changeQuantity(item, item.cantidad + 1)">+</button>
+            </div>
+            <strong class="item-subtotal">{{ item.subtotal | currency:'USD':'symbol':'1.2-2' }}</strong>
+          </div>
+        </div>
+
+        <button
+          class="remove-button"
+          type="button"
+          [disabled]="busyDetailId !== null"
+          [attr.aria-label]="'Quitar ' + item.titulo + ' del carrito'"
+          title="Quitar del carrito"
+          (click)="removeItem(item)">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h16M10 11v6m4-6v6M6 7l1 14h10l1-14M9 7V4h6v3"></path>
+          </svg>
+        </button>
+      </article>
+
+      <div *ngIf="cart.detalles.length === 0" class="empty-cart">
+        <span aria-hidden="true">▤</span>
+        <h2>Tu carrito está vacío</h2>
+        <p>Explora el catálogo y encuentra tu próxima lectura.</p>
+        <a routerLink="/catalogo">Seguir comprando</a>
+      </div>
+    </section>
+
+    <aside class="order-summary" aria-label="Resumen del carrito">
+      <h2>Resumen del pedido</h2>
+      <div class="summary-row">
+        <span>Subtotal ({{ itemCount }} {{ itemCount === 1 ? 'artículo' : 'artículos' }})</span>
+        <span>{{ cart.total | currency:'USD':'symbol':'1.2-2' }}</span>
+      </div>
+      <div class="summary-divider"></div>
+      <div class="summary-row total-row">
+        <strong>Total</strong>
+        <strong>{{ cart.total | currency:'USD':'symbol':'1.2-2' }}</strong>
+      </div>
+      <p class="summary-note">El total se calcula con los precios vigentes del carrito.</p>
+      <a class="continue-link" routerLink="/catalogo">← Seguir comprando</a>
+    </aside>
+  </div>
+</main>

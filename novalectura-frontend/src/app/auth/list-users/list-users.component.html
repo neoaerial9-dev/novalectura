@@ -1,0 +1,64 @@
+<main class="users-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Administración</p>
+      <h1>Usuarios registrados</h1>
+      <p>Consulta las cuentas creadas en Nova Lectura.</p>
+    </div>
+    <nav aria-label="Administración">
+      <a routerLink="/admin/libros">Gestión de libros</a>
+      <a routerLink="/catalogo">Volver al catálogo</a>
+    </nav>
+  </header>
+
+  <section class="users-panel" aria-labelledby="users-heading">
+    <div class="list-heading">
+      <div>
+        <h2 id="users-heading">Cuentas</h2>
+        <p>{{ totalUsers }} {{ totalUsers === 1 ? 'usuario' : 'usuarios' }}</p>
+      </div>
+      <button type="button" class="secondary-button" (click)="loadUsers(currentPage)"
+        [disabled]="loading">
+        {{ loading ? 'Actualizando...' : 'Actualizar' }}
+      </button>
+    </div>
+
+    <p class="feedback error" *ngIf="errorMessage" role="alert">{{ errorMessage }}</p>
+    <p class="empty-state" *ngIf="loading">Cargando usuarios...</p>
+    <p class="empty-state" *ngIf="!loading && !errorMessage && users.length === 0">
+      Todavía no hay usuarios registrados.
+    </p>
+
+    <div class="table-wrap" *ngIf="!loading && users.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Correo electrónico</th>
+            <th>Rol</th>
+            <th>Fecha de registro</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>
+              <strong>{{ user.nombres }} {{ user.apellidos }}</strong>
+              <span class="secondary-text">ID {{ user.idUsuario }}</span>
+            </td>
+            <td>{{ user.correo }}</td>
+            <td><span class="role-badge" [class.admin-role]="user.rol === 'ADMIN'">{{ user.rol }}</span></td>
+            <td>{{ user.fechaRegistro | date:'medium' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <nav class="pagination" *ngIf="totalPages > 1" aria-label="Paginación de usuarios">
+      <button type="button" (click)="loadUsers(currentPage - 1)"
+        [disabled]="loading || currentPage === 0">Anterior</button>
+      <span>Página {{ currentPage + 1 }} de {{ totalPages }}</span>
+      <button type="button" (click)="loadUsers(currentPage + 1)"
+        [disabled]="loading || currentPage + 1 >= totalPages">Siguiente</button>
+    </nav>
+  </section>
+</main>

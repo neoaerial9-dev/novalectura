@@ -1,0 +1,59 @@
+<div class="backdrop" (click)="onBackdropClick($event)">
+  <section
+    class="detail-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="book-detail-title">
+    <div class="detail-cover">
+      <img
+        *ngIf="book.imagen"
+        [src]="book.imagen"
+        [alt]="'Portada de ' + book.titulo">
+      <div *ngIf="!book.imagen" class="cover-placeholder" aria-hidden="true">
+        <span>✦</span>
+        <strong>{{ book.titulo }}</strong>
+        <small>{{ book.autor }}</small>
+      </div>
+    </div>
+
+    <div class="detail-content">
+      <button class="close-button" type="button" aria-label="Cerrar detalle" (click)="close.emit()">
+        ×
+      </button>
+
+      <span class="category">{{ book.categoria.nombre }}</span>
+      <h1 id="book-detail-title">{{ book.titulo }}</h1>
+      <p class="author">{{ book.autor }}</p>
+      <p class="condition">Estado: {{ book.condicion.replace('_', ' ') }}</p>
+      <p class="description">{{ book.descripcion || 'Este libro aún no tiene una descripción.' }}</p>
+      <p class="stock">
+        Stock disponible: <strong>{{ book.stock }} {{ book.stock === 1 ? 'unidad' : 'unidades' }}</strong>
+      </p>
+      <p class="seller">Publicado por {{ book.vendedor.nombreCompleto }}</p>
+
+      <div class="purchase">
+        <strong class="price">{{ book.precio | currency:'USD':'symbol':'1.2-2' }}</strong>
+
+        <div class="purchase-actions">
+          <div class="quantity-control" aria-label="Cantidad">
+            <button type="button" aria-label="Disminuir cantidad" (click)="decreaseQuantity()" [disabled]="quantity <= 1">−</button>
+            <output aria-live="polite">{{ quantity }}</output>
+            <button
+              type="button"
+              aria-label="Aumentar cantidad"
+              (click)="increaseQuantity()"
+              [disabled]="quantity >= book.stock">+</button>
+          </div>
+
+          <button class="add-button" type="button" [disabled]="cannotAdd" (click)="confirmAdd()">
+            {{ adding ? 'Agregando...' : book.stock < 1 ? 'Agotado' : isOwnBook ? 'Es tu publicación' : 'Agregar al carrito' }}
+          </button>
+        </div>
+
+        <p class="total">Subtotal: {{ total | currency:'USD':'symbol':'1.2-2' }}</p>
+      </div>
+
+      <p *ngIf="message" class="message" role="alert">{{ message }}</p>
+    </div>
+  </section>
+</div>

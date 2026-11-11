@@ -1,0 +1,56 @@
+<div class="register-shell">
+  <header class="site-header">
+    <a class="brand" routerLink="/login" aria-label="Nova Lectura">
+      <span class="book-mark" aria-hidden="true">▤</span>
+      <span>Nova Lectura</span>
+    </a>
+    <nav aria-label="Navegación principal">
+      <a routerLink="/catalogo">Catálogo</a>
+      <a class="header-login" routerLink="/login">Ingresar</a>
+    </nav>
+  </header>
+
+  <main class="register-page">
+    <section class="register-content" aria-labelledby="register-title">
+      <div class="register-emblem" aria-hidden="true">▤</div>
+      <h1 id="register-title">Crea tu cuenta</h1>
+      <p class="register-subtitle">Únete a Nova Lectura y descubre tu próximo libro.</p>
+
+      <form class="register-form" #registerForm="ngForm" (ngSubmit)="register()">
+        <div class="form-row">
+          <div>
+            <label for="nombres">Nombre</label>
+            <input id="nombres" name="nombres" [(ngModel)]="request.nombres"
+              required maxlength="100" autocomplete="given-name">
+          </div>
+          <div>
+            <label for="apellidos">Apellido</label>
+            <input id="apellidos" name="apellidos" [(ngModel)]="request.apellidos"
+              required maxlength="100" autocomplete="family-name">
+          </div>
+        </div>
+
+        <label for="correo">Correo electrónico</label>
+        <input id="correo" name="correo" type="email" placeholder="tu@email.com"
+          [(ngModel)]="request.correo" required email maxlength="150" autocomplete="email">
+
+        <label for="contrasena">Contraseña</label>
+        <input id="contrasena" name="contrasena" type="password"
+          [(ngModel)]="request.contrasena" required minlength="8" maxlength="72"
+          autocomplete="new-password">
+        <p class="field-hint">Usa al menos 8 caracteres.</p>
+
+        <label for="confirm-password">Confirmar contraseña</label>
+        <input id="confirm-password" name="confirmPassword" type="password"
+          [(ngModel)]="confirmPassword" required autocomplete="new-password">
+
+        <p class="form-error" *ngIf="errorMessage" role="alert">{{ errorMessage }}</p>
+        <button type="submit" [disabled]="registerForm.invalid || loading">
+          {{ loading ? 'Creando cuenta...' : 'Crear cuenta' }}
+        </button>
+      </form>
+
+      <p class="register-footer">¿Ya tienes una cuenta? <a routerLink="/login">Ingresa</a></p>
+    </section>
+  </main>
+</div>

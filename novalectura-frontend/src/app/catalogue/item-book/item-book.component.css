@@ -1,0 +1,154 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.book-card {
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid #e4e0d9;
+  border-radius: 11px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgb(45 37 26 / 7%);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgb(45 37 26 / 12%);
+}
+
+.cover {
+  height: 174px;
+  overflow: hidden;
+  background: #e8e1d6;
+}
+
+.cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cover-placeholder {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 18px;
+  background: linear-gradient(145deg, #32435b, #9b7156);
+  color: #fff;
+  text-align: center;
+}
+
+.cover-placeholder span {
+  color: #e4c59f;
+  font-size: 24px;
+}
+
+.cover-placeholder strong {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 16px;
+}
+
+.cover-placeholder small {
+  opacity: .8;
+}
+
+.book-details {
+  display: flex;
+  min-height: 140px;
+  flex-direction: column;
+  padding: 11px 12px 12px;
+}
+
+.category {
+  align-self: flex-start;
+  border-radius: 20px;
+  padding: 4px 8px;
+  background: #f3eee7;
+  color: #8a6748;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .45px;
+  text-transform: uppercase;
+}
+
+.book-details h2 {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 8px 0 3px;
+  color: #33312e;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 15px;
+  line-height: 1.25;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.author,
+.condition {
+  overflow: hidden;
+  margin: 0;
+  color: #88837d;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.condition {
+  margin-top: 4px;
+  text-transform: capitalize;
+}
+
+.book-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+.price {
+  color: #533b2a;
+  font-size: 14px;
+}
+
+.book-footer button {
+  border: 0;
+  border-radius: 6px;
+  padding: 7px 9px;
+  background: #855a38;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.book-footer button:hover:not(:disabled) {
+  background: #68432a;
+}
+
+.book-footer button:disabled {
+  background: #a7a19a;
+  cursor: default;
+}
+
+@media (max-width: 420px) {
+  .cover {
+    height: 145px;
+  }
+
+  .book-details {
+    padding-right: 9px;
+    padding-left: 9px;
+  }
+
+  .book-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

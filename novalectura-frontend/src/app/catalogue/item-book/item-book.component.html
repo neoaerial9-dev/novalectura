@@ -1,0 +1,31 @@
+<article class="book-card">
+  <div class="cover">
+    <img
+      *ngIf="book.imagen"
+      [src]="book.imagen"
+      [alt]="'Portada de ' + book.titulo"
+      loading="lazy">
+    <div *ngIf="!book.imagen" class="cover-placeholder" aria-hidden="true">
+      <span>✦</span>
+      <strong>{{ book.titulo }}</strong>
+      <small>{{ book.autor }}</small>
+    </div>
+  </div>
+
+  <div class="book-details">
+    <span class="category">{{ book.categoria.nombre }}</span>
+    <h2>{{ book.titulo }}</h2>
+    <p class="author">{{ book.autor }}</p>
+    <p class="condition">{{ book.condicion.replace('_', ' ') }}</p>
+
+    <div class="book-footer">
+      <strong class="price">{{ book.precio | currency:'USD':'symbol':'1.2-2' }}</strong>
+      <button
+        type="button"
+        [disabled]="book.stock < 1"
+        (click)="openDetails.emit(book)">
+        {{ book.stock < 1 ? 'Agotado' : '+ Carrito' }}
+      </button>
+    </div>
+  </div>
+</article>

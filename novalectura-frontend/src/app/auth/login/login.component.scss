@@ -1,0 +1,336 @@
+$navy: #1f2e4d;
+$paper: #faf7f2;
+$brown: #80502e;
+$text: #28231f;
+$muted: #827a71;
+$border: #e8e1d8;
+
+:host {
+  display: block;
+  min-height: 100vh;
+  color: $text;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.login-shell {
+  min-height: 100vh;
+  background: $paper;
+}
+
+.site-header {
+  height: 56px;
+  padding: 0 max(24px, calc((100% - 1024px) / 2));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  background: $navy;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(37, 29, 21, 0.18);
+}
+
+.brand,
+.main-navigation,
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+.brand {
+  gap: 8px;
+  color: #fff;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.book-icon {
+  width: 21px;
+  height: 21px;
+  fill: #d3a06f;
+
+  .book-page {
+    fill: none;
+    stroke: #fff;
+    stroke-linecap: round;
+    stroke-width: 1.1;
+  }
+
+  .book-spine {
+    fill: none;
+    stroke: $navy;
+    stroke-width: 1.1;
+  }
+}
+
+.main-navigation {
+  gap: 28px;
+
+  a {
+    color: #e9e9eb;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 160ms ease;
+
+    &:hover,
+    &:focus-visible {
+      color: #e1b58b;
+    }
+  }
+}
+
+.header-actions {
+  gap: 18px;
+}
+
+.cart-icon {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: #fff;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.header-login {
+  padding: 9px 17px;
+  border-radius: 7px;
+  background: #d3a06f;
+  color: #241d18;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 160ms ease;
+
+  &:hover,
+  &:focus-visible {
+    background: #e1b58b;
+  }
+}
+
+.login-page {
+  min-height: calc(100vh - 56px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 42px 24px;
+  box-sizing: border-box;
+}
+
+.login-content {
+  width: 100%;
+  max-width: 328px;
+  text-align: center;
+
+  h1 {
+    margin: 12px 0 5px;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 23px;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+}
+
+.login-emblem {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: $navy;
+  box-shadow: 0 2px 4px rgba(31, 46, 77, 0.18);
+
+  .book-icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.login-subtitle {
+  margin: 0 0 25px;
+  color: $muted;
+  font-size: 13px;
+}
+
+.login-form {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid $border;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(49, 39, 27, 0.12);
+  text-align: left;
+
+  label {
+    margin-top: 1px;
+    color: #302922;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  input {
+    width: 100%;
+    height: 39px;
+    padding: 0 13px;
+    box-sizing: border-box;
+    border: 1px solid $border;
+    border-radius: 10px;
+    outline: none;
+    background: #fff;
+    color: $text;
+    font: inherit;
+    font-size: 13px;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+
+    &::placeholder {
+      color: #aaa39b;
+    }
+
+    &:focus {
+      border-color: #b87e4e;
+      box-shadow: 0 0 0 3px rgba(184, 126, 78, 0.15);
+    }
+  }
+
+  button {
+    min-height: 40px;
+    margin-top: 9px;
+    border: 0;
+    border-radius: 10px;
+    background: $brown;
+    color: #fff;
+    cursor: pointer;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    transition: background-color 160ms ease;
+
+    &:hover:not(:disabled) {
+      background: #6d4225;
+    }
+
+    &:focus-visible {
+      outline: 3px solid rgba(184, 126, 78, 0.35);
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.65;
+    }
+  }
+}
+
+.login-error {
+  margin: 3px 0;
+  color: #b00020;
+  font-size: 13px;
+}
+
+.login-loading {
+  margin: 2px 0 0;
+  color: $muted;
+  font-size: 12px;
+  text-align: center;
+}
+
+.login-footer {
+  margin: 18px 0 0;
+  color: $muted;
+  font-size: 13px;
+
+  a {
+    color: $brown;
+    font-weight: 700;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      text-decoration: underline;
+    }
+  }
+}
+
+.login-note {
+  margin: 11px 0 0;
+  color: #aaa39b;
+  font-size: 11px;
+}
+
+@media (max-width: 600px) {
+  .site-header {
+    height: 60px;
+    padding: 0 16px;
+  }
+
+  .brand {
+    font-size: 14px;
+  }
+
+  .main-navigation {
+    gap: 12px;
+
+    a {
+      font-size: 12px;
+    }
+  }
+
+  .header-actions {
+    gap: 10px;
+  }
+
+  .cart-icon {
+    width: 19px;
+    height: 19px;
+  }
+
+  .header-login {
+    padding: 8px 11px;
+    font-size: 12px;
+  }
+
+  .login-page {
+    min-height: calc(100vh - 60px);
+    padding: 32px 20px;
+  }
+}
+
+@media (max-width: 420px) {
+  .site-header {
+    padding: 0 12px;
+  }
+
+  .brand {
+    gap: 5px;
+    font-size: 12px;
+  }
+
+  .brand .book-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .main-navigation {
+    gap: 9px;
+
+    a {
+      font-size: 11px;
+    }
+  }
+
+  .header-actions {
+    gap: 7px;
+  }
+
+  .header-login {
+    padding: 7px 9px;
+    font-size: 11px;
+  }
+}

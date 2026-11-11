@@ -1,0 +1,72 @@
+<div class="login-shell">
+  <header class="site-header">
+    <a class="brand" routerLink="/login" aria-label="Tienda de Libros">
+      <svg class="book-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5 3.75h12.5A1.5 1.5 0 0 1 19 5.25v15H6.5A2.5 2.5 0 0 1 4 17.75v-12A2 2 0 0 1 6 3.75Z" />
+        <path class="book-page" d="M7.5 7h8M7.5 10h8M7.5 13h5" />
+        <path class="book-spine" d="M7 4v14" />
+      </svg>
+      <span>Tienda de Libros</span>
+    </a>
+
+    <nav class="main-navigation" aria-label="Navegación principal">
+      <a routerLink="/catalogo">Inicio</a>
+      <a routerLink="/catalogo">Catálogo</a>
+    </nav>
+
+    <div class="header-actions">
+      <svg class="cart-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 4h2l2.2 11.1a2 2 0 0 0 2 1.6h8.5a2 2 0 0 0 1.9-1.4L21 8H6" />
+        <circle cx="10" cy="20" r="1" />
+        <circle cx="18" cy="20" r="1" />
+      </svg>
+      <a class="header-login" href="#login-form">Ingresar</a>
+    </div>
+  </header>
+
+  <main class="login-page">
+    <section class="login-content" aria-labelledby="login-title">
+      <div class="login-emblem" aria-hidden="true">
+        <svg class="book-icon" viewBox="0 0 24 24">
+          <path d="M5 3.75h12.5A1.5 1.5 0 0 1 19 5.25v15H6.5A2.5 2.5 0 0 1 4 17.75v-12A2 2 0 0 1 6 3.75Z" />
+          <path class="book-page" d="M7.5 7h8M7.5 10h8M7.5 13h5" />
+          <path class="book-spine" d="M7 4v14" />
+        </svg>
+      </div>
+      <h1 id="login-title">Bienvenido de nuevo</h1>
+      <p class="login-subtitle">Ingresa a tu cuenta para continuar</p>
+
+      <form id="login-form" class="login-form" #loginForm="ngForm" (ngSubmit)="login()">
+        <label for="correo">Correo electrónico</label>
+        <input
+          id="correo"
+          name="correo"
+          type="email"
+          placeholder="tu@email.com"
+          [(ngModel)]="correo"
+          required
+          email
+          autocomplete="username">
+
+        <label for="contrasena">Contraseña</label>
+        <input
+          id="contrasena"
+          name="contrasena"
+          type="password"
+          placeholder="••••••••"
+          [(ngModel)]="contrasena"
+          required
+          autocomplete="current-password">
+
+        <p class="login-error" *ngIf="errorMessage" role="alert">{{ errorMessage }}</p>
+        <button type="submit" [disabled]="loginForm.invalid || loading">
+          {{ loading ? 'Ingresando...' : 'Ingresar' }}
+        </button>
+        <p class="login-loading" *ngIf="loading" role="status">Conectando con el servidor...</p>
+      </form>
+
+      <p class="login-footer">¿No tienes cuenta? <a routerLink="/registro">Crea una cuenta</a></p>
+      <p class="login-note">Ingresa las credenciales de tu cuenta</p>
+    </section>
+  </main>
+</div>
