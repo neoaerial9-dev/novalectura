@@ -1,4 +1,4 @@
-# 📚 Nova Lectura
+# 📚 Nova Lectura (Desactualizado)
 
 ### Cada libro abre un nuevo universo.
 
