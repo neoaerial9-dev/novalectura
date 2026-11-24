@@ -1,0 +1,48 @@
+<div class="contenedor pagina">
+  <div class="encabezado encabezado--fila">
+    <div>
+      <span class="eyebrow">Panel del vendedor</span>
+      <h1>Mis ventas</h1>
+    </div>
+    <a routerLink="/vender" class="btn btn--borde">Mis libros</a>
+  </div>
+
+  @if (error()) {
+    <div class="alerta alerta--error" role="alert">{{ error() }}</div>
+  } @else if (cargando()) {
+    <p class="muted">Cargando tus ventas...</p>
+  } @else if (ventas().length === 0) {
+    <div class="vacio tarjeta">
+      <h2>Todavía no tienes ventas</h2>
+      <p>Cuando alguien compre uno de tus libros lo verás aquí con sus datos de contacto.</p>
+    </div>
+  } @else {
+    <p class="muted">Total vendido: <span class="precio">{{ totalVendido() | moneda }}</span></p>
+    <div class="tabla-contenedor">
+      <table class="tabla tabla--apilada">
+        <thead>
+          <tr>
+            <th>Pedido</th>
+            <th>Fecha</th>
+            <th>Libro</th>
+            <th class="num">Cant.</th>
+            <th class="num">Subtotal</th>
+            <th>Comprador</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (v of ventas(); track v.pedidoId + '-' + v.libroId) {
+            <tr>
+              <td data-etiqueta="Pedido">#{{ v.pedidoId }}</td>
+              <td data-etiqueta="Fecha">{{ v.fechaPedido | date: 'd MMM y' }}</td>
+              <td data-etiqueta="Libro"><strong>{{ v.titulo }}</strong></td>
+              <td class="num" data-etiqueta="Cantidad">{{ v.cantidad }}</td>
+              <td class="num" data-etiqueta="Subtotal">{{ v.subtotal | moneda }}</td>
+              <td data-etiqueta="Comprador">{{ v.comprador }}<br /><span class="muted">{{ v.correoComprador }}</span></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

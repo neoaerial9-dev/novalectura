@@ -1,0 +1,58 @@
+<div class="contenedor pagina">
+  <div class="encabezado encabezado--fila">
+    <div>
+      <span class="eyebrow">Panel del vendedor</span>
+      <h1>Mis libros</h1>
+    </div>
+    <div class="botones-fila">
+      <a routerLink="/mis-ventas" class="btn btn--borde">Ver mis ventas</a>
+      <a routerLink="/vender/nuevo" class="btn btn--primario">+ Publicar libro</a>
+    </div>
+  </div>
+
+  @if (error()) {
+    <div class="alerta alerta--error" role="alert">{{ error() }}</div>
+  } @else if (cargando()) {
+    <p class="muted">Cargando tus libros...</p>
+  } @else if (libros().length === 0) {
+    <div class="vacio tarjeta">
+      <h2>Aún no has publicado libros</h2>
+      <p>Publica tu primer libro usado y empieza a vender.</p>
+      <a routerLink="/vender/nuevo" class="btn btn--primario">+ Publicar libro</a>
+    </div>
+  } @else {
+    <div class="tabla-contenedor">
+      <table class="tabla tabla--apilada">
+        <thead>
+          <tr>
+            <th>Portada</th>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Categoría</th>
+            <th>Condición</th>
+            <th class="num">Precio</th>
+            <th class="num">Stock</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (libro of libros(); track libro.id) {
+            <tr [class.resaltada]="resaltado() === libro.id">
+              <td data-etiqueta="Portada"><img class="miniatura" [appImagenLibro]="libro.imagen" [alt]="'Portada de ' + libro.titulo" /></td>
+              <td data-etiqueta="Título"><strong>{{ libro.titulo }}</strong></td>
+              <td data-etiqueta="Autor">{{ libro.autor }}</td>
+              <td data-etiqueta="Categoría"><span class="etiqueta">{{ libro.categoria.nombre }}</span></td>
+              <td data-etiqueta="Condición">{{ libro.condicion | condicion }}</td>
+              <td class="num" data-etiqueta="Precio">{{ libro.precio | moneda }}</td>
+              <td class="num" data-etiqueta="Stock">{{ libro.stock }}</td>
+              <td class="acciones">
+                <a class="btn-enlace" [routerLink]="['/vender', libro.id, 'editar']">Editar</a>
+                <button type="button" class="btn-enlace peligro" (click)="eliminar(libro)">Eliminar</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

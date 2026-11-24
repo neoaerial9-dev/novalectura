@@ -1,0 +1,61 @@
+<div class="contenedor pagina pagina--media">
+  <div class="encabezado">
+    <span class="eyebrow">Panel de administración</span>
+    <h1>Categorías</h1>
+  </div>
+
+  <form class="tarjeta formulario" [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+    <h2>{{ editando() ? 'Editar categoría' : 'Nueva categoría' }}</h2>
+    <div class="rejilla-campos">
+      <div class="campo">
+        <label for="nombre">Nombre</label>
+        <input id="nombre" class="entrada" formControlName="nombre" placeholder="Literatura" />
+        @if (form.controls.nombre.touched && form.controls.nombre.invalid) {
+          <span class="error-campo" role="alert">El nombre es obligatorio (máx. 60 caracteres)</span>
+        }
+      </div>
+      <div class="campo">
+        <label for="descripcion">Descripción (opcional)</label>
+        <input id="descripcion" class="entrada" formControlName="descripcion" />
+      </div>
+    </div>
+    <div class="botones">
+      <button type="submit" class="btn btn--primario" [disabled]="guardando()">
+        {{ editando() ? 'Guardar cambios' : 'Agregar categoría' }}
+      </button>
+      @if (editando()) {
+        <button type="button" class="btn btn--borde" (click)="cancelar()">Cancelar</button>
+      }
+    </div>
+  </form>
+
+  @if (cargando()) {
+    <p class="muted">Cargando categorías...</p>
+  } @else {
+    <div class="tabla-contenedor">
+      <table class="tabla tabla--apilada">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (c of categorias(); track c.id) {
+            <tr>
+              <td data-etiqueta="Nombre"><strong>{{ c.nombre }}</strong></td>
+              <td class="muted" data-etiqueta="Descripción">{{ c.descripcion || '—' }}</td>
+              <td class="acciones">
+                <button type="button" class="btn-enlace" (click)="editar(c)">Editar</button>
+                <button type="button" class="btn-enlace peligro" (click)="eliminar(c)">Eliminar</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr><td colspan="3" class="muted">Todavía no hay categorías.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

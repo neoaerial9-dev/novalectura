@@ -1,0 +1,73 @@
+:host {
+  display: block;
+}
+
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.15s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgb(43 33 24 / 12%);
+  }
+}
+
+.card__imagen {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  padding: 0;
+  border: 0;
+  background: var(--etiqueta);
+  cursor: pointer;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.card__cuerpo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 14px 14px 14px;
+}
+
+.card__titulo {
+  font-size: 0.9688rem;
+  margin-top: 8px;
+}
+
+.card__autor {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 0.7812rem;
+}
+
+.card__meta {
+  margin: 6px 0 0;
+  font-size: 0.75rem;
+  color: var(--cobre-oscuro);
+}
+
+.card__pie {
+  margin-top: auto;
+  padding-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .precio {
+    font-size: 1.125rem;
+  }
+}

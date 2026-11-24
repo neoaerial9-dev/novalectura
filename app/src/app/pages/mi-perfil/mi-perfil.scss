@@ -1,0 +1,46 @@
+.perfil {
+  padding: 0;
+  overflow: hidden;
+  margin-bottom: 22px;
+
+  form {
+    padding: 24px;
+  }
+}
+
+.perfil__cabecera {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--navy);
+  color: #fff;
+  padding: 20px 24px;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: flex-start;
+  }
+
+  span:not(.perfil__avatar):not(.etiqueta) {
+    color: #a9b6d0;
+    font-size: 0.8125rem;
+  }
+}
+
+.perfil__avatar {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--cobre);
+  font-weight: 600;
+  font-size: 1.0625rem;
+}
+
+.clave h2 {
+  font-size: 1.125rem;
+  margin-bottom: 16px;
+}

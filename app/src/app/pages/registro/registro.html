@@ -1,0 +1,59 @@
+<div class="contenedor pagina pagina--estrecha acceso">
+  <span class="acceso__logo"><app-icono nombre="libro" [tamano]="24" /></span>
+  <h1>Crea tu cuenta</h1>
+  <p class="sub">Únete a nuestra comunidad de lectores</p>
+
+  <form class="tarjeta" [formGroup]="form" (ngSubmit)="enviar()" novalidate>
+    @if (error()) {
+      <div class="alerta alerta--error" role="alert">{{ error() }}</div>
+    }
+
+    <div class="campo">
+      <label for="nombres">Nombres</label>
+      <input id="nombres" class="entrada" formControlName="nombres" placeholder="María" autocomplete="given-name" />
+      @if (form.controls.nombres.touched && form.controls.nombres.invalid) {
+        <span class="error-campo" role="alert">Los nombres son obligatorios</span>
+      }
+    </div>
+
+    <div class="campo">
+      <label for="apellidos">Apellidos</label>
+      <input id="apellidos" class="entrada" formControlName="apellidos" placeholder="García" autocomplete="family-name" />
+      @if (form.controls.apellidos.touched && form.controls.apellidos.invalid) {
+        <span class="error-campo" role="alert">Los apellidos son obligatorios</span>
+      }
+    </div>
+
+    <div class="campo">
+      <label for="correo">Correo electrónico</label>
+      <input id="correo" type="email" class="entrada" formControlName="correo" placeholder="tu@email.com" autocomplete="email" />
+      @if (form.controls.correo.touched && form.controls.correo.invalid) {
+        <span class="error-campo" role="alert">Ingresa un correo válido</span>
+      }
+    </div>
+
+    <div class="campo">
+      <label for="contrasena">Contraseña</label>
+      <input id="contrasena" type="password" class="entrada" formControlName="contrasena" placeholder="Mínimo 8 caracteres" autocomplete="new-password" />
+      @if (form.controls.contrasena.touched && form.controls.contrasena.invalid) {
+        <span class="error-campo" role="alert">La contraseña debe tener entre 8 y 64 caracteres</span>
+      }
+    </div>
+
+    <div class="campo">
+      <label for="confirmar">Confirmar contraseña</label>
+      <input id="confirmar" type="password" class="entrada" formControlName="confirmar" placeholder="Repite la contraseña" autocomplete="new-password" />
+      @if (form.controls.confirmar.touched && form.hasError('noCoinciden')) {
+        <span class="error-campo" role="alert">Las contraseñas no coinciden</span>
+      }
+    </div>
+
+    <button type="submit" class="btn btn--primario btn--block" [disabled]="enviando()">
+      {{ enviando() ? 'Creando cuenta...' : 'Crear cuenta' }}
+    </button>
+  </form>
+
+  <p class="pie-acceso">
+    ¿Ya tienes cuenta? <a routerLink="/ingresar" [queryParams]="{ redirect: redirect() }"><strong>Ingresar</strong></a>
+  </p>
+</div>

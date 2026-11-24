@@ -1,0 +1,80 @@
+@if (hero()) {
+  <section class="hero">
+    <div class="contenedor">
+      <span class="eyebrow">Bienvenido a nuestra colección</span>
+      <h1>Descubre tu próxima <em>gran lectura</em></h1>
+      <p>
+        @if (total() > 0) {
+          Más de {{ total() }} títulos de segunda mano, publicados por lectores como tú.
+        } @else {
+          Libros de segunda mano, publicados por lectores como tú.
+        }
+      </p>
+    </div>
+  </section>
+} @else {
+  <div class="contenedor encabezado cabecera-simple">
+    <span class="eyebrow">Explora</span>
+    <h1>Catálogo</h1>
+  </div>
+}
+
+<section class="contenedor catalogo">
+  <div class="filtros">
+    <label class="buscador">
+      <span class="solo-lectores">Buscar libros</span>
+      <app-icono nombre="buscar" [tamano]="16" />
+      <input type="search" class="entrada" placeholder="Buscar por título, autor o categoría..." [formControl]="busqueda" />
+    </label>
+    <label class="filtro">
+      <span class="solo-lectores">Categoría</span>
+      <select class="entrada" [formControl]="categoria">
+        <option [ngValue]="null">Todas las categorías</option>
+        @for (c of categorias(); track c.id) {
+          <option [ngValue]="c.id">{{ c.nombre }}</option>
+        }
+      </select>
+    </label>
+    <label class="filtro">
+      <span class="solo-lectores">Ordenar por</span>
+      <select class="entrada" [formControl]="orden">
+        @for (o of ordenes; track o.valor) {
+          <option [value]="o.valor">{{ o.etiqueta }}</option>
+        }
+      </select>
+    </label>
+  </div>
+
+  @if (error()) {
+    <div class="alerta alerta--error" role="alert">{{ error() }}</div>
+  } @else if (cargando() && libros().length === 0) {
+    <p class="muted conteo">Cargando libros...</p>
+  } @else {
+    <p class="muted conteo" aria-live="polite">{{ total() }} {{ total() === 1 ? 'libro encontrado' : 'libros encontrados' }}</p>
+  }
+
+  @if (!error() && !cargando() && libros().length === 0) {
+    <div class="vacio">
+      <h2>No encontramos libros</h2>
+      <p>Prueba con otra búsqueda o categoría.</p>
+    </div>
+  } @else {
+    <div class="grilla" [class.cargando]="cargando()">
+      @for (libro of libros(); track libro.id) {
+        <app-libro-card [libro]="libro" (abrir)="seleccionado.set($event)" (agregar)="agregarAlCarrito($event)" />
+      }
+    </div>
+  }
+
+  <app-paginador [pagina]="pagina()" [totalPaginas]="totalPaginas()" (cambiar)="cambiarPagina($event)" />
+</section>
+
+@if (seleccionado(); as libro) {
+  <app-libro-detalle
+    [libro]="libro"
+    (cerrar)="seleccionado.set(null)"
+    (agregar)="agregarAlCarrito(libro, $event)"
+    (editar)="editar($event)"
+    (eliminar)="eliminar($event)"
+  />
+}

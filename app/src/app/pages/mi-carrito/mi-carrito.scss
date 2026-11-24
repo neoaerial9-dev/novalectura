@@ -1,0 +1,181 @@
+.disposicion {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 22px;
+  align-items: start;
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 16px;
+
+  img {
+    width: 64px;
+    height: 86px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: var(--etiqueta);
+  }
+
+  h3 {
+    font-size: 1rem;
+    margin-bottom: 2px;
+  }
+}
+
+.item__datos {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.item__derecha {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+
+  .precio {
+    font-size: 1.0625rem;
+  }
+}
+
+.cantidad {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--borde);
+  border-radius: 9px;
+  overflow: hidden;
+
+  button {
+    background: #fff;
+    border: 0;
+    padding: 7px 10px;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  span {
+    min-width: 28px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+}
+
+.quitar {
+  background: none;
+  border: 0;
+  color: var(--muted);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--peligro);
+  }
+}
+
+.resumen {
+  position: sticky;
+  top: 84px;
+
+  h2 {
+    font-size: 1.125rem;
+    margin-bottom: 16px;
+  }
+}
+
+.fila {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.875rem;
+  margin-bottom: 10px;
+}
+
+.fila--total {
+  border-top: 1px solid var(--borde);
+  padding-top: 14px;
+  margin: 14px 0 18px;
+
+  .precio {
+    font-size: 1.25rem;
+  }
+}
+
+.nota {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin: 12px 0 0;
+  text-align: center;
+}
+
+.seguir {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 14px;
+  font-size: 0.8125rem;
+  text-decoration: none;
+}
+
+@media (max-width: 560px) {
+  .item {
+    grid-template-columns: 56px 1fr;
+    gap: 12px;
+
+    img {
+      width: 56px;
+      height: 76px;
+    }
+  }
+
+  .item__derecha {
+    grid-column: 1 / -1;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .resumen {
+    position: static;
+  }
+}
+
+.cantidad button {
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.aviso-item {
+  background: var(--peligro-fondo);
+  color: var(--peligro);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 0.8125rem;
+}
+
+.nota--error {
+  color: var(--peligro);
+  font-weight: 500;
+}

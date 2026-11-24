@@ -1,0 +1,39 @@
+<div class="contenedor pagina">
+  <div class="encabezado">
+    <span class="eyebrow">Panel de administración</span>
+    <h1>Usuarios</h1>
+    <p class="muted">{{ total() }} {{ total() === 1 ? 'usuario registrado' : 'usuarios registrados' }}</p>
+  </div>
+
+  @if (error()) {
+    <div class="alerta alerta--error" role="alert">{{ error() }}</div>
+  } @else if (cargando() && usuarios().length === 0) {
+    <p class="muted">Cargando usuarios...</p>
+  } @else {
+    <div class="tabla-contenedor">
+      <table class="tabla tabla--apilada">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Rol</th>
+            <th>Teléfono</th>
+            <th>Registro</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (u of usuarios(); track u.id) {
+            <tr>
+              <td data-etiqueta="Nombre">{{ u.nombres }} {{ u.apellidos }}</td>
+              <td data-etiqueta="Correo">{{ u.correo }}</td>
+              <td data-etiqueta="Rol"><span class="etiqueta">{{ u.rol === 'ADMINISTRADOR' ? 'Administrador' : 'Cliente' }}</span></td>
+              <td data-etiqueta="Teléfono">{{ u.telefono || '—' }}</td>
+              <td data-etiqueta="Registro">{{ u.fechaRegistro | date: 'd MMM y' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <app-paginador [pagina]="pagina()" [totalPaginas]="totalPaginas()" (cambiar)="cargar($event)" />
+  }
+</div>

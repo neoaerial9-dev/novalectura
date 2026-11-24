@@ -1,0 +1,71 @@
+<div class="contenedor pagina pagina--media">
+  <div class="encabezado">
+    <span class="eyebrow">Mi cuenta</span>
+    <h1>Perfil</h1>
+  </div>
+
+  <section class="tarjeta perfil">
+    <div class="perfil__cabecera">
+      <span class="perfil__avatar">{{ auth.iniciales() }}</span>
+      <div>
+        <strong>{{ auth.usuario()?.nombres }} {{ auth.usuario()?.apellidos }}</strong>
+        <span>{{ auth.usuario()?.correo }}</span>
+        <span class="etiqueta">{{ auth.esAdmin() ? 'Administrador' : 'Cliente' }}</span>
+      </div>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+      <div class="rejilla-campos">
+        <div class="campo">
+          <label for="nombres">Nombres</label>
+          <input id="nombres" class="entrada" formControlName="nombres" autocomplete="given-name" />
+          @if (form.controls.nombres.touched && form.controls.nombres.invalid) {
+            <span class="error-campo" role="alert">Los nombres son obligatorios</span>
+          }
+        </div>
+        <div class="campo">
+          <label for="apellidos">Apellidos</label>
+          <input id="apellidos" class="entrada" formControlName="apellidos" autocomplete="family-name" />
+          @if (form.controls.apellidos.touched && form.controls.apellidos.invalid) {
+            <span class="error-campo" role="alert">Los apellidos son obligatorios</span>
+          }
+        </div>
+        <div class="campo">
+          <label for="correo">Correo electrónico</label>
+          <input id="correo" class="entrada" [value]="auth.usuario()?.correo ?? ''" readonly />
+        </div>
+        <div class="campo">
+          <label for="telefono">Teléfono</label>
+          <input id="telefono" class="entrada" formControlName="telefono" placeholder="+51 900 000 000" autocomplete="tel" />
+        </div>
+        <div class="campo completo">
+          <label for="direccion">Dirección de envío</label>
+          <input id="direccion" class="entrada" formControlName="direccionEnvio" placeholder="Calle, número, ciudad" autocomplete="street-address" />
+        </div>
+      </div>
+      <button type="submit" class="btn btn--primario" [disabled]="guardando()">Guardar cambios</button>
+    </form>
+  </section>
+
+  <section class="tarjeta clave">
+    <h2>Cambiar contraseña</h2>
+    <form [formGroup]="formClave" (ngSubmit)="cambiarContrasena()" novalidate>
+      <div class="rejilla-campos">
+        <div class="campo">
+          <label for="actual">Contraseña actual</label>
+          <input id="actual" type="password" class="entrada" formControlName="actual" autocomplete="current-password" />
+        </div>
+        <div class="campo">
+          <label for="nueva">Nueva contraseña</label>
+          <input id="nueva" type="password" class="entrada" formControlName="nueva" autocomplete="new-password" />
+          @if (formClave.controls.nueva.touched && formClave.controls.nueva.invalid) {
+            <span class="error-campo" role="alert">Debe tener entre 8 y 64 caracteres</span>
+          } @else if (formClave.hasError('igual')) {
+            <span class="error-campo" role="alert">La nueva contraseña debe ser distinta de la actual</span>
+          }
+        </div>
+      </div>
+      <button type="submit" class="btn btn--borde" [disabled]="cambiando()">Actualizar contraseña</button>
+    </form>
+  </section>
+</div>

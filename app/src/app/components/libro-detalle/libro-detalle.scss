@@ -1,0 +1,172 @@
+.fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgb(30 45 74 / 55%);
+  backdrop-filter: blur(3px);
+}
+
+.dialogo {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  width: min(760px, 100%);
+  max-height: calc(100vh - 40px);
+  overflow: auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 24px 64px rgb(0 0 0 / 30%);
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dialogo__imagen {
+  background: var(--etiqueta);
+  min-height: 220px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.dialogo__cuerpo {
+  position: relative;
+  padding: 26px 26px 22px;
+
+  h2 {
+    font-size: 1.375rem;
+    margin-top: 10px;
+  }
+}
+
+.dialogo__cerrar {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--crema);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.autor {
+  margin: 4px 0 12px;
+  color: var(--muted);
+}
+
+.datos {
+  margin: 0 0 12px;
+  display: grid;
+  gap: 3px;
+  font-size: 0.8125rem;
+
+  div {
+    display: flex;
+    gap: 8px;
+  }
+
+  dt {
+    color: var(--muted);
+    min-width: 84px;
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+.descripcion {
+  font-size: 0.8438rem;
+  margin: 0 0 12px;
+}
+
+.stock {
+  font-size: 0.7812rem;
+  color: var(--muted);
+  margin: 0 0 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--borde);
+}
+
+.compra {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+
+  .precio {
+    font-size: 1.5rem;
+  }
+}
+
+.cantidad {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--borde);
+  border-radius: 9px;
+  overflow: hidden;
+
+  button {
+    background: #fff;
+    border: 0;
+    padding: 9px 11px;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  span {
+    min-width: 30px;
+    text-align: center;
+    font-weight: 500;
+  }
+}
+
+.gestion {
+  display: flex;
+  gap: 18px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--borde);
+}
+
+@media (max-width: 640px) {
+  .fondo {
+    padding: 0;
+    place-items: end stretch;
+  }
+
+  .dialogo {
+    width: 100%;
+    max-height: 92vh;
+    border-radius: 18px 18px 0 0;
+  }
+
+  .dialogo__imagen {
+    min-height: 0;
+    height: 200px;
+  }
+
+  .dialogo__cerrar {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+.cantidad button {
+  min-width: 40px;
+  min-height: 40px;
+}

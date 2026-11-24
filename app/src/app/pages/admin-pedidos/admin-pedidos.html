@@ -1,0 +1,22 @@
+<div class="contenedor pagina pagina--media">
+  <div class="encabezado">
+    <span class="eyebrow">Panel de administración</span>
+    <h1>Pedidos</h1>
+    <p class="muted">{{ total() }} {{ total() === 1 ? 'pedido registrado' : 'pedidos registrados' }}</p>
+  </div>
+
+  @if (error()) {
+    <div class="alerta alerta--error" role="alert">{{ error() }}</div>
+  } @else if (cargando() && pedidos().length === 0) {
+    <p class="muted">Cargando pedidos...</p>
+  } @else if (pedidos().length === 0) {
+    <div class="vacio tarjeta"><h2>Todavía no hay pedidos</h2></div>
+  } @else {
+    <div class="lista-pedidos">
+      @for (pedido of pedidos(); track pedido.id) {
+        <app-pedido-tarjeta [pedido]="pedido" [mostrarCliente]="true" />
+      }
+    </div>
+    <app-paginador [pagina]="pagina()" [totalPaginas]="totalPaginas()" (cambiar)="cargar($event)" />
+  }
+</div>
