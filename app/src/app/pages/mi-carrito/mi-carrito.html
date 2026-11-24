@@ -1,0 +1,72 @@
+<div class="contenedor pagina">
+  <div class="encabezado">
+    <span class="eyebrow">Mi compra</span>
+    <h1>Carrito</h1>
+  </div>
+
+  @if (cargando() && carrito.carrito().items.length === 0) {
+    <p class="muted">Cargando tu carrito...</p>
+  } @else if (carrito.carrito().items.length === 0) {
+    <div class="vacio tarjeta">
+      <h2>Tu carrito está vacío</h2>
+      <p>Explora el catálogo y encuentra tu próxima lectura.</p>
+      <a routerLink="/catalogo" class="btn btn--primario">Ver catálogo</a>
+    </div>
+  } @else {
+    <div class="disposicion">
+      <ul class="items">
+        @for (item of carrito.carrito().items; track item.libroId) {
+          <li class="item tarjeta">
+            <img [appImagenLibro]="item.imagen" [alt]="'Portada de ' + item.titulo" />
+            <div class="item__datos">
+              <h3>{{ item.titulo }}</h3>
+              <span class="muted">{{ item.precioUnitario | moneda }} c/u</span>
+              @if (!item.disponible) {
+                <span class="aviso-item" role="alert">Este libro ya no está disponible. Quítalo para continuar.</span>
+              } @else if (item.cantidad > item.stockDisponible) {
+                <span class="aviso-item" role="alert">
+                  {{ item.stockDisponible === 0 ? 'Agotado.' : 'Solo quedan ' + item.stockDisponible + '.' }} Ajusta la cantidad para continuar.
+                </span>
+              }
+              <div class="cantidad" role="group" [attr.aria-label]="'Cantidad de ' + item.titulo">
+                <button type="button" aria-label="Disminuir cantidad" [disabled]="item.cantidad <= 1" (click)="cambiarCantidad(item, -1)">
+                  <app-icono nombre="menos" [tamano]="14" />
+                </button>
+                <span>{{ item.cantidad }}</span>
+                <button type="button" aria-label="Aumentar cantidad" [disabled]="item.cantidad >= item.stockDisponible" (click)="cambiarCantidad(item, 1)">
+                  <app-icono nombre="mas" [tamano]="14" />
+                </button>
+              </div>
+            </div>
+            <div class="item__derecha">
+              <button type="button" class="quitar" [attr.aria-label]="'Quitar ' + item.titulo" (click)="quitar(item)">
+                <app-icono nombre="papelera" [tamano]="16" />
+              </button>
+              <span class="precio">{{ item.subtotal | moneda }}</span>
+            </div>
+          </li>
+        }
+      </ul>
+
+      <aside class="resumen tarjeta">
+        <h2>Resumen del pedido</h2>
+        <div class="fila">
+          <span class="muted">Subtotal ({{ carrito.cantidadItems() }} {{ carrito.cantidadItems() === 1 ? 'artículo' : 'artículos' }})</span>
+          <span>{{ carrito.carrito().total | moneda }}</span>
+        </div>
+        <div class="fila fila--total">
+          <strong>Total</strong>
+          <span class="precio">{{ carrito.carrito().total | moneda }}</span>
+        </div>
+        <button type="button" class="btn btn--primario btn--block" [disabled]="confirmando() || hayProblemas()" (click)="confirmar()">
+          {{ confirmando() ? 'Registrando...' : 'Confirmar compra' }}
+        </button>
+        @if (hayProblemas()) {
+          <p class="nota nota--error" role="alert">Revisa los libros marcados antes de confirmar la compra.</p>
+        }
+        <p class="nota">El pago y la entrega se coordinan directamente con cada vendedor.</p>
+        <a routerLink="/catalogo" class="seguir"><app-icono nombre="flecha" [tamano]="14" /> Seguir comprando</a>
+      </aside>
+    </div>
+  }
+</div>

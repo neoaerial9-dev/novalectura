@@ -1,0 +1,23 @@
+<article class="card">
+  <button type="button" class="card__imagen" (click)="abrir.emit(libro())" [attr.aria-label]="'Ver detalle de ' + libro().titulo">
+    <img [appImagenLibro]="libro().imagen" [alt]="'Portada de ' + libro().titulo" loading="lazy" />
+  </button>
+  <div class="card__cuerpo">
+    <span class="etiqueta">{{ libro().categoria.nombre }}</span>
+    <h3 class="card__titulo">{{ libro().titulo }}</h3>
+    <p class="card__autor">{{ libro().autor }}</p>
+    <p class="card__meta">{{ libro().condicion | condicion }} · {{ libro().vendedorNombre }}</p>
+    <div class="card__pie">
+      <span class="precio">{{ libro().precio | moneda }}</span>
+      <button
+        type="button"
+        class="btn btn--primario btn--sm"
+        [disabled]="esPropio() || agotado()"
+        [attr.aria-label]="'Agregar ' + libro().titulo + ' al carrito'"
+        (click)="agregar.emit(libro())"
+      >
+        {{ etiquetaBoton() }}
+      </button>
+    </div>
+  </div>
+</article>

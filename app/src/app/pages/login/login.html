@@ -1,0 +1,38 @@
+<div class="contenedor pagina pagina--estrecha acceso">
+  <span class="acceso__logo"><app-icono nombre="libro" [tamano]="24" /></span>
+  <h1>Bienvenido de nuevo</h1>
+  <p class="sub">Ingresa a tu cuenta para continuar</p>
+
+  <form class="tarjeta" [formGroup]="form" (ngSubmit)="enviar()" novalidate>
+    @if (expirada()) {
+      <div class="alerta alerta--info" role="status">Tu sesión expiró. Vuelve a ingresar.</div>
+    }
+    @if (error()) {
+      <div class="alerta alerta--error" role="alert">{{ error() }}</div>
+    }
+
+    <div class="campo">
+      <label for="correo">Correo electrónico</label>
+      <input id="correo" type="email" class="entrada" formControlName="correo" placeholder="tu@email.com" autocomplete="email" />
+      @if (form.controls.correo.touched && form.controls.correo.invalid) {
+        <span class="error-campo" role="alert">Ingresa un correo válido</span>
+      }
+    </div>
+
+    <div class="campo">
+      <label for="contrasena">Contraseña</label>
+      <input id="contrasena" type="password" class="entrada" formControlName="contrasena" placeholder="••••••••" autocomplete="current-password" />
+      @if (form.controls.contrasena.touched && form.controls.contrasena.invalid) {
+        <span class="error-campo" role="alert">Ingresa tu contraseña</span>
+      }
+    </div>
+
+    <button type="submit" class="btn btn--primario btn--block" [disabled]="enviando()">
+      {{ enviando() ? 'Ingresando...' : 'Ingresar' }}
+    </button>
+  </form>
+
+  <p class="pie-acceso">
+    ¿No tienes cuenta? <a routerLink="/registro" [queryParams]="{ redirect: redirect() }"><strong>Crear cuenta</strong></a>
+  </p>
+</div>

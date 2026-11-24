@@ -1,0 +1,74 @@
+<header class="nav">
+  <div class="contenedor nav__interior">
+    <a routerLink="/" class="marca" (click)="cerrarNav()">
+      <span class="marca__icono"><app-icono nombre="libro" [tamano]="16" /></span>
+      <span class="marca__texto">Tienda de Libros</span>
+    </a>
+
+    <nav id="menu-principal" class="nav__links" [class.abierta]="navAbierta()" aria-label="Principal">
+      <a routerLink="/" routerLinkActive="activo" ariaCurrentWhenActive="page" [routerLinkActiveOptions]="{ exact: true }" (click)="cerrarNav()">Inicio</a>
+      <a routerLink="/catalogo" routerLinkActive="activo" ariaCurrentWhenActive="page" (click)="cerrarNav()">Catálogo</a>
+      @if (auth.autenticado()) {
+        <a routerLink="/vender" routerLinkActive="activo" ariaCurrentWhenActive="page" (click)="cerrarNav()">Vender</a>
+      }
+      @if (auth.esAdmin()) {
+        <a routerLink="/admin/usuarios" routerLinkActive="activo" ariaCurrentWhenActive="page" class="admin" (click)="cerrarNav()">Usuarios</a>
+        <a routerLink="/admin/pedidos" routerLinkActive="activo" ariaCurrentWhenActive="page" class="admin" (click)="cerrarNav()">Pedidos</a>
+        <a routerLink="/admin/categorias" routerLinkActive="activo" ariaCurrentWhenActive="page" class="admin" (click)="cerrarNav()">Categorías</a>
+      }
+
+    </nav>
+
+    <div class="nav__acciones">
+      <a routerLink="/carrito" class="carrito" aria-label="Carrito de compras" (click)="cerrarNav()">
+        <app-icono nombre="carrito" [tamano]="22" />
+        @if (carrito.cantidadItems() > 0) {
+          <span class="carrito__cantidad" [attr.aria-label]="carrito.cantidadItems() + ' artículos en el carrito'">{{ carrito.cantidadItems() }}</span>
+        }
+      </a>
+
+      @if (auth.autenticado()) {
+        <div class="usuario">
+          <button
+            type="button"
+            class="avatar"
+            aria-haspopup="menu"
+            [attr.aria-expanded]="menuAbierto()"
+            [attr.aria-label]="'Menú de ' + auth.usuario()?.nombres"
+            (click)="alternarMenu($event)"
+          >
+            {{ auth.iniciales() }}
+          </button>
+          @if (menuAbierto()) {
+            <div class="menu" role="menu" (click)="$event.stopPropagation()">
+              <div class="menu__cabecera">
+                <strong>{{ auth.usuario()?.nombres }} {{ auth.usuario()?.apellidos }}</strong>
+                <span>{{ auth.usuario()?.correo }}</span>
+              </div>
+              <a role="menuitem" routerLink="/perfil" (click)="cerrarMenu()">Mi perfil</a>
+              <a role="menuitem" routerLink="/mis-pedidos" (click)="cerrarMenu()">Mis pedidos</a>
+              <a role="menuitem" routerLink="/vender" (click)="cerrarMenu()">Mis libros</a>
+              <a role="menuitem" routerLink="/mis-ventas" (click)="cerrarMenu()">Mis ventas</a>
+              <button type="button" role="menuitem" class="menu__salir" (click)="salir()">
+                <app-icono nombre="salir" [tamano]="15" /> Cerrar sesión
+              </button>
+            </div>
+          }
+        </div>
+      } @else {
+        <a routerLink="/ingresar" class="btn btn--cobre btn--sm" (click)="cerrarNav()">Ingresar</a>
+      }
+
+      <button
+        type="button"
+        class="nav__toggle"
+        aria-controls="menu-principal"
+        [attr.aria-expanded]="navAbierta()"
+        [attr.aria-label]="navAbierta() ? 'Cerrar menú' : 'Abrir menú'"
+        (click)="alternarNav()"
+      >
+        <app-icono [nombre]="navAbierta() ? 'cerrar' : 'menu'" [tamano]="22" />
+      </button>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,24 @@
+<div class="contenedor pagina pagina--media">
+  <div class="encabezado">
+    <span class="eyebrow">Mi cuenta</span>
+    <h1>Mis pedidos</h1>
+  </div>
+
+  @if (error()) {
+    <div class="alerta alerta--error" role="alert">{{ error() }}</div>
+  } @else if (cargando()) {
+    <p class="muted">Cargando tus pedidos...</p>
+  } @else if (pedidos().length === 0) {
+    <div class="vacio tarjeta">
+      <h2>Aún no tienes pedidos</h2>
+      <p>Cuando compres un libro aparecerá aquí.</p>
+      <a routerLink="/catalogo" class="btn btn--primario">Ver catálogo</a>
+    </div>
+  } @else {
+    <div class="lista-pedidos">
+      @for (pedido of pedidos(); track pedido.id) {
+        <app-pedido-tarjeta [pedido]="pedido" />
+      }
+    </div>
+  }
+</div>

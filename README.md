@@ -1,82 +1,101 @@
-# 📚 Nova Lectura
+# Nova Lectura - Tienda de libros usados
 
-### Cada libro abre un nuevo universo.
+Aplicación web para comprar y vender libros usados, desarrollada para **Librería Nova Lectura S.A.C.**
 
-Nova Lectura es una tienda de libros desarrollada con un enfoque en las librerías independientes. El proyecto busca crear un espacio digital donde los lectores puedan descubrir libros, explorar diferentes géneros literarios y acceder a un catálogo que contribuya a dar visibilidad a las librerías independientes.
+Cualquier usuario puede publicar libros y comprar los de otros (sin comprar los suyos); la librería administra categorías, usuarios y pedidos.
 
-Nuestra visión es conectar la tecnología con la cultura literaria, facilitando el acceso a nuevas historias y promoviendo el valor de los negocios dedicados a la venta de libros.
+## Tecnologías
 
-##  Objetivo del proyecto
+| Capa | Tecnología |
+|---|---|
+| Frontend | Angular 22.2.7, SCSS |
+| Backend | Spring Boot 4.1.2, Java 21, Maven, Spring Security + JWT, Spring Data JPA |
+| Base de datos | MySQL 8 |
+| Documentación API | springdoc / Swagger UI |
 
-Desarrollar una plataforma de comercio electrónico fullstack que permita gestionar y explorar un catálogo de libros, con una arquitectura que facilite la incorporación progresiva de funcionalidades orientadas a lectores y librerías independientes.
+Arquitectura cliente-servidor en tres capas: Angular -> API REST -> MySQL.
 
-## 🛠️ Tecnologías utilizadas
+## Estructura del repositorio
 
-### Backend
-- **Java:** lenguaje de programación principal.
-- **Spring Boot:** desarrollo de la API y lógica de negocio.
-- **Pruebas de backend:** verificación del comportamiento y la fiabilidad de los componentes desarrollados.
-
-### Frontend
-- **Angular:** desarrollo de la interfaz de usuario y la experiencia de navegación.
-
-### Herramientas de desarrollo
-- **Git:** control de versiones.
-- **GitHub:** alojamiento del repositorio y gestión del código fuente.
-- **Maven o Gradle:** gestión de dependencias y construcción del backend, según la configuración del proyecto.
-
-## Arquitectura del proyecto
-
-Nova Lectura sigue un enfoque fullstack, separando el backend y el frontend para mantener una estructura organizada y facilitar el desarrollo, las pruebas y el mantenimiento.
-
-```text
-nova-lectura/
-├── backend/       # API y lógica de negocio con Spring Boot
-├── frontend/      # Interfaz de usuario con Angular
-└── README.md      # Documentación del proyecto
+```
+.
+├── api/    Backend Spring Boot (paquete com.novalectura.api)
+├── app/    Frontend Angular
+└── README.md
 ```
 
-*Nota: la estructura anterior es una propuesta ilustrativa. Los nombres de las carpetas deben coincidir con los del repositorio real.*
+## Ejecución
 
-##  Estado actual del proyecto
+### 1. Requisitos
+- JDK 21
+- Node.js 22 y npm
+- MySQL 8 en ejecución
 
-**Fase actual: desarrollo del backend y pruebas.**
+### 2. Backend
+```bash
+cd api
+export DB_PASSWORD=tu_clave_de_mysql      # Windows (PowerShell): $env:DB_PASSWORD="tu_clave"
+./mvnw spring-boot:run
+```
+- API: http://localhost:8080
+- Swagger UI: http://localhost:8080/swagger-ui.html
+- La base `novalectura` se crea sola.
 
-El proyecto se encuentra en la etapa de construcción y validación del backend. En esta fase, el trabajo se centra en desarrollar los componentes del servidor, comprobar su funcionamiento y verificar que la lógica implementada responda correctamente a los requisitos del sistema.
+### 3. Frontend
+```bash
+cd app
+npm install
+npm start
+```
+Abre http://localhost:4200.
 
-El frontend con Angular forma parte de la arquitectura prevista para la aplicación y se integrará con el backend mediante la API correspondiente.
+### 4. Primer ingreso
+Al arrancar por primera vez se crea un administrador:
 
-## Hoja de ruta
+| Correo | Contraseña |
+|---|---|
+| `admin@novalectura.com` | `Admin12345` |
 
-- [x] Definir el enfoque fullstack del proyecto.
-- [x] Seleccionar Spring Boot y Angular como tecnologías principales.
-- [ ] Completar el desarrollo de los componentes del backend.
-- [ ] Ejecutar y completar las pruebas del backend.
-- [ ] Integrar el frontend Angular con la API.
-- [ ] Desarrollar la experiencia de navegación del catálogo de libros.
-- [ ] Implementar búsqueda y filtros de libros.
-- [ ] Incorporar funcionalidades de gestión de libros y librerías.
-- [ ] Desarrollar el flujo de compras y pedidos.
-- [ ] Realizar pruebas de integración y validación general.
+Cámbialos con las variables de entorno `ADMIN_CORREO` y `ADMIN_CONTRASENA`. Los usuarios que se registran desde la web son siempre clientes. Antes de crear libros, el administrador debe crear al menos una categoría (**Categorías** en la barra superior).
 
-*La hoja de ruta se actualizará según el progreso real del desarrollo.*
+## Variables de entorno del backend
 
-##  Visión
+| Variable | Por defecto | Uso |
+|---|---|---|
+| `DB_HOST`, `DB_PORT`, `DB_NAME` | `localhost`, `3306`, `novalectura` | Conexión a MySQL |
+| `DB_USER`, `DB_PASSWORD` | `root`, *(vacío)* | Credenciales de MySQL |
+| `JWT_SECRET` | clave de desarrollo | Secreto de firma (mínimo 32 caracteres) |
+| `JWT_EXPIRATION_MS` | `86400000` | Vigencia del token (24 h) |
+| `CORS_ORIGINS` | `http://localhost:4200` | Orígenes permitidos |
+| `ADMIN_CORREO`, `ADMIN_CONTRASENA` | ver arriba | Administrador inicial |
+| `UPLOADS_DIR` | `uploads` | Carpeta de las portadas subidas (en producción, una ruta persistente y con respaldo) |
+| `UPLOADS_RETENCION_HORAS`, `UPLOADS_LIMPIEZA_CRON` | `24`, `0 0 3 * * *` | Limpieza nocturna de portadas que ningún libro usa |
 
-Creemos que las librerías independientes aportan diversidad, identidad y valor cultural a sus comunidades.
+## Pruebas
 
-Nova Lectura busca aprovechar las posibilidades del desarrollo de software para acercar los libros a más personas y construir una plataforma que facilite el encuentro entre lectores y librerías independientes.
+```bash
+cd api && ./mvnw test      # JUnit 5 + Mockito (servicios con TDD); reporte JaCoCo en target/site/jacoco
+```
 
-##  Contribuciones
+## Funcionalidades
 
-Las propuestas de mejora, los reportes de errores y las sugerencias de nuevas funcionalidades son bienvenidos.
+- **Visitantes:** catálogo con búsqueda por título, autor o categoría, filtro y detalle del libro.
+- **Usuarios:** registro e inicio de sesión (JWT), carrito, compra (descuenta el stock), historial de pedidos, perfil y cambio de contraseña.
+- **Vendedores (cualquier usuario):** publicar libros subiendo la portada desde su computador, editar y eliminar los suyos, y ver sus ventas con los datos del comprador.
+- **Accesibilidad y móvil:** buen contraste, navegación por teclado y lectores de pantalla, y diseño adaptable a celulares.
+- **Reactividad:** Inicio, catálogo, "Mis libros", carrito, pedidos, ventas y la gestión de usuarios y pedidos del administrador se actualizan solos, sin recargar. Si el stock de un libro del carrito cambia o se da de baja, se avisa antes de comprar.
+- **Precios en soles** (ej. `S/ 18.99`).
+- **Administrador:** gestión de categorías, consulta de usuarios y de todos los pedidos, y moderación de cualquier libro.
 
-Si deseas contribuir, puedes abrir un *issue* en el repositorio para compartir una idea o informar de un problema.
+## Decisiones de diseño
 
-##  Licencia
+- Un único rol de usuario (`CLIENTE`) compra y vende; `ADMINISTRADOR` modera.
+- El stock se descuenta con una actualización atómica en la base de datos para evitar sobreventas.
+- Eliminar un libro es un borrado lógico, para conservar el historial de pedidos.
+- El carrito muestra el precio vigente; el pedido guarda el precio del momento de la compra.
+- El JWT no tiene estado en el servidor: cerrar sesión descarta el token en el navegador.
+- Las portadas se guardan en disco (carpeta `UPLOADS_DIR`) con nombre aleatorio y se validan por su contenido real; en la base de datos solo queda la ruta. Cada noche se borran las que ningún libro usa.
 
-La licencia del proyecto está pendiente de definir.
+## Fuera de alcance
 
----
-
-**Nova Lectura — Un espacio digital para descubrir historias y apoyar a las librerías independientes.**
+Pasarelas de pago, envíos y seguimiento, facturación electrónica, reseñas y calificaciones, recomendaciones con IA, aplicación móvil, varias sucursales y reportes avanzados.

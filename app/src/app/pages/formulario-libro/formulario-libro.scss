@@ -1,0 +1,35 @@
+.botones {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.portada {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+
+  @media (max-width: 520px) {
+    flex-direction: column;
+  }
+}
+
+.portada__controles {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+}
+
+.vista-previa {
+  width: 110px;
+  height: 150px;
+  flex: none;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--borde);
+  background: var(--etiqueta);
+}

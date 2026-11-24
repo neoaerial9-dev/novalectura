@@ -1,0 +1,64 @@
+<div class="fondo" (click)="cerrar.emit()">
+  <div class="dialogo" role="dialog" aria-modal="true" aria-labelledby="detalle-titulo" (click)="$event.stopPropagation()">
+    <div class="dialogo__imagen">
+      <img [appImagenLibro]="libro().imagen" [alt]="'Portada de ' + libro().titulo" />
+    </div>
+    <div class="dialogo__cuerpo">
+      <button type="button" class="dialogo__cerrar" aria-label="Cerrar" (click)="cerrar.emit()">
+        <app-icono nombre="cerrar" [tamano]="16" />
+      </button>
+      <span class="etiqueta">{{ libro().categoria.nombre }}</span>
+      <h2 id="detalle-titulo">{{ libro().titulo }}</h2>
+      <p class="autor">{{ libro().autor }}</p>
+
+      <dl class="datos">
+        <div><dt>Condición</dt><dd>{{ libro().condicion | condicion }}</dd></div>
+        @if (libro().editorial) {
+          <div><dt>Editorial</dt><dd>{{ libro().editorial }}</dd></div>
+        }
+        @if (libro().anioPublicacion) {
+          <div><dt>Año</dt><dd>{{ libro().anioPublicacion }}</dd></div>
+        }
+        @if (libro().isbn) {
+          <div><dt>ISBN</dt><dd>{{ libro().isbn }}</dd></div>
+        }
+        <div><dt>Vendido por</dt><dd>{{ libro().vendedorNombre }}</dd></div>
+      </dl>
+
+      @if (libro().descripcion) {
+        <p class="descripcion">{{ libro().descripcion }}</p>
+      }
+
+      <p class="stock">
+        Stock disponible: <strong>{{ libro().stock }} {{ libro().stock === 1 ? 'unidad' : 'unidades' }}</strong>
+      </p>
+
+      <div class="compra">
+        <span class="precio">{{ libro().precio | moneda }}</span>
+        @if (esPropio()) {
+          <span class="muted">Publicaste este libro</span>
+        } @else if (agotado()) {
+          <span class="muted">Agotado</span>
+        } @else {
+          <div class="cantidad" role="group" aria-label="Cantidad">
+            <button type="button" aria-label="Disminuir cantidad" [disabled]="cantidad() <= 1" (click)="cambiar(-1)">
+              <app-icono nombre="menos" [tamano]="14" />
+            </button>
+            <span>{{ cantidad() }}</span>
+            <button type="button" aria-label="Aumentar cantidad" [disabled]="cantidad() >= libro().stock" (click)="cambiar(1)">
+              <app-icono nombre="mas" [tamano]="14" />
+            </button>
+          </div>
+          <button type="button" class="btn btn--primario" (click)="agregar.emit(cantidad())">Agregar al carrito</button>
+        }
+      </div>
+
+      @if (puedeGestionar()) {
+        <div class="gestion">
+          <button type="button" class="btn-enlace" (click)="editar.emit(libro())">Editar</button>
+          <button type="button" class="btn-enlace peligro" (click)="eliminar.emit(libro())">Eliminar</button>
+        </div>
+      }
+    </div>
+  </div>
+</div>
